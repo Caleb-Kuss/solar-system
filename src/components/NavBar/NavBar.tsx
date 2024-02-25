@@ -1,27 +1,42 @@
 import Link from "next/link";
-
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth/next";
-import { redirect } from "next/navigation";
 
 export default async function Navbar() {
   const session = await getServerSession(options);
 
   return (
-    <nav className="bg-blue-800 p-4">
-      <ul className="flex justify-evenly text-2xl font-bold">
+    <nav className="bg-gray-900 p-4">
+      <ul className="flex justify-evenly text-lg font-bold text-white">
         <li>
-          <Link href="/">Home</Link>
+          <Link href="/">
+            <span className="cursor-pointer hover:text-gray-300">Home</span>
+          </Link>
         </li>
-        <li>
-          <Link href="/api/auth/signin">Sign In</Link>
-        </li>
-        <li>
-          <Link href="/api/auth/signout">Sign Out</Link>
-        </li>
+        {session ? (
+          <li>
+            <Link href="/api/auth/signout">
+              <span className="cursor-pointer hover:text-gray-300">
+                Sign Out
+              </span>
+            </Link>
+          </li>
+        ) : (
+          <li>
+            <Link href="/api/auth/signin">
+              <span className="cursor-pointer hover:text-gray-300">
+                Sign In
+              </span>
+            </Link>
+          </li>
+        )}
         {session && (
           <li>
-            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/dashboard">
+              <span className="cursor-pointer hover:text-gray-300">
+                Dashboard
+              </span>
+            </Link>
           </li>
         )}
       </ul>
