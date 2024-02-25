@@ -1,15 +1,9 @@
-"use client";
-import { useRouter } from "next/navigation";
-
+import Link from "next/link";
 export default function Dashboard() {
-  const router = useRouter();
-
   return (
     <div>
       <h1>Dashboard</h1>
-      <button type="button" onClick={() => router.back()}>
-        Click here to go back
-      </button>{" "}
+      <Link href="/"> Home</Link>
     </div>
   );
 }
