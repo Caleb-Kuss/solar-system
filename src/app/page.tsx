@@ -1,5 +1,7 @@
-import SkeletonLoader from "@/components/loaders/SkeletonLoader";
-import Spinner from "@/components/loaders/Spinner";
+import SkeletonLoader from "@/components/Loaders/SkeletonLoader";
+import Spinner from "@/components/Loaders/Spinner";
+import Navbar from "@/components/NavBar/NavBar";
+import Link from "next/link";
 
 const loading = true;
 
@@ -9,7 +11,7 @@ export default function Home() {
       {loading && (
         <>
           <div>Main Page</div>
-
+          <Navbar />
           {/* <SkeletonLoader /> */}
           <Spinner />
         </>
