@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/server/page.ts"
+    "src/server/page.ts",
+    "src/components/Apods"
   ],
   "exclude": ["node_modules"]
 }

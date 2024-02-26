@@ -13,12 +13,14 @@ const credentialsSchema = z.object({
   password: z.string(),
   email: z.string().email()
 });
+
 type User = {
   id: string;
   name: string;
   email: string;
   password: string;
 };
+
 export const options: NextAuthOptions = {
   providers: [
     GitHubProvider({
@@ -49,42 +51,43 @@ export const options: NextAuthOptions = {
           | Record<"email" | "username" | "password", string>
           | undefined
       ): Promise<User | null> {
-        const validatedCredentials = credentialsSchema.safeParse(credentials);
+        try {
+          const validatedCredentials = credentialsSchema.safeParse(credentials);
 
-        if (!validatedCredentials.success) {
-          console.error("Validation error:", validatedCredentials.error);
-          throw new Error("Invalid credentials");
-        }
+          if (!validatedCredentials.success) {
+            console.error("Validation error:", validatedCredentials.error);
+            return null;
+          }
 
-        const userExists = await getUserByUsername(credentials?.username ?? "");
+          let user = await getUserByUsername(credentials?.username ?? "");
+          console.log("USER", user);
 
-        if (!userExists) {
-          const user = await getOrCreateUser(
-            credentials?.password ?? "",
+          if (!user) {
+            user = await getOrCreateUser(
+              credentials?.password ?? "",
+              credentials?.username ?? "",
+              credentials?.email ?? ""
+            );
+          }
+
+          const loginSuccessful = await loginUser(
             credentials?.username ?? "",
-            credentials?.email ?? ""
+            credentials?.password ?? ""
           );
+
+          if (!loginSuccessful) {
+            console.log("INCORRECT PASSWORD");
+            return null;
+          }
+
           return {
-            name: user.userName,
-            password: user.password,
             email: user.email,
+            password: user.password,
+            name: user.userName,
             id: user.id.toString()
           };
-        }
-
-        const loginSuccessful = await loginUser(
-          credentials?.username ?? "",
-          credentials?.password ?? ""
-        );
-        if (loginSuccessful) {
-          return {
-            email: userExists.email,
-            password: userExists.password,
-            name: userExists.userName,
-            id: userExists.id.toString()
-          };
-        } else {
-          console.log("INCORRECT PASSWORD");
+        } catch (error) {
+          console.error("Error in authorize function:", error);
           return null;
         }
       }
