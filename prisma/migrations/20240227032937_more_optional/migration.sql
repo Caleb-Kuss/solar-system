@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Apod" ALTER COLUMN "copyRight" DROP NOT NULL,
+ALTER COLUMN "datePosted" DROP NOT NULL;

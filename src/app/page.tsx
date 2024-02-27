@@ -1,6 +1,5 @@
 import Navbar from "@/components/NavBar/NavBar";
 import Apods from "./components/Apods";
-import Favorites from "../components/Apods/Favorites";
 export default function Home() {
   return (
     <>
@@ -10,12 +9,9 @@ export default function Home() {
           <h1 className="text-4xl font-bold mb-4">
             Welcome to Space Explorer!
           </h1>
-          <p className="text-lg">Embark on an interstellar journey with us.</p>
-          <p>Check out the Astronomy Picture of the Day below!</p>
         </div>
-        <Favorites>
-          <Apods />
-        </Favorites>
+        <br />
+        <Apods />
       </div>
     </>
   );

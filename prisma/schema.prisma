@@ -32,9 +32,9 @@ model Apod {
   title          String   @db.VarChar(255)
   explanation    String
   url            String
-  hdUrl          String
-  copyRight      String
-  datePosted     String
+  hdUrl          String?
+  copyRight      String?
+  datePosted     String?
   favoritedBy    User   @relation(fields: [favoritedById], references: [id])
   favoritedById  Int 
 }
