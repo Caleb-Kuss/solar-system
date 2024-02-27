@@ -1,12 +1,14 @@
 "use server";
 
+import { Apod } from "@/types/Apods/apods";
+import { User } from "@/types/Users/users";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export async function markImageAsFavorite(userEmail: any, apod: Apod) {
+export async function markImageAsFavorite(userData: User, apod: Apod) {
   try {
     const user = await prisma.user.findUnique({
-      where: { email: userEmail.email },
+      where: { email: userData.email },
     });
 
     if (!user) {
@@ -23,24 +25,26 @@ export async function markImageAsFavorite(userEmail: any, apod: Apod) {
           title: apod.title,
           explanation: apod.explanation,
           url: apod.url,
-          hdUrl: apod.hdUrl,
-          copyRight: apod.copyRight,
-          datePosted: apod.datePosted,
+          hdUrl: apod.hdurl,
+          copyRight: apod.copyright,
+          datePosted: apod.date,
           favoritedById: user.id,
         },
       });
     }
 
-    await prisma.user.update({
-      where: { email: userEmail.email },
+    const connectApodToUser = await prisma.user.update({
+      where: { email: userData.email },
       data: {
         favoriteApods: {
           connect: { id: existingApod.id },
         },
       },
     });
-
-    return "ok";
+    if (!connectApodToUser) {
+      console.error("Could not save the Apod as a favorite for the user.");
+    }
+    return connectApodToUser;
   } catch (error) {
     console.error("Error marking image as favorite:", error);
     throw error;
