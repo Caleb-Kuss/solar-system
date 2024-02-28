@@ -20,16 +20,16 @@ async function getOrCreateUser(password: string, name: string, email: string) {
 
     const user = await prisma.user.upsert({
       where: {
-        userName: name
+        userName: name,
       },
       update: {
-        password: hashedPassword
+        password: hashedPassword,
       },
       create: {
         password: hashedPassword,
         userName: name,
-        email: email
-      }
+        email: email,
+      },
     });
 
     return user;
@@ -45,8 +45,8 @@ async function getUserByUsername(username: string) {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        userName: username
-      }
+        userName: username,
+      },
     });
     return user;
   } catch (error) {
@@ -55,18 +55,14 @@ async function getUserByUsername(username: string) {
   }
 }
 
-// Function to verify password during login
 async function verifyPassword(username: string, password: string) {
   try {
-    // Retrieve the user by username
     const user = await getUserByUsername(username);
 
-    // If user not found or no password stored, return false
     if (!user || !user.password) {
       return false;
     }
 
-    // Compare the provided password with the stored hashed password
     return await bcrypt.compare(password, user.password);
   } catch (error) {
     console.error("Error verifying password:", error);
@@ -76,16 +72,11 @@ async function verifyPassword(username: string, password: string) {
 
 async function loginUser(username: string, password: string) {
   try {
-    // Verify the password
     const passwordMatch = await verifyPassword(username, password);
 
     if (passwordMatch) {
-      // Passwords match, authentication successful
-      console.log("Authentication successful");
       return true;
     } else {
-      // Passwords do not match, authentication failed
-      console.log("Authentication failed");
       return false;
     }
   } catch (error) {

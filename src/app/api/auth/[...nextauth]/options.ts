@@ -5,13 +5,13 @@ import Credentials from "next-auth/providers/credentials";
 import {
   getOrCreateUser,
   getUserByUsername,
-  loginUser
+  loginUser,
 } from "@/lib/users/users";
 
 const credentialsSchema = z.object({
   username: z.string(),
   password: z.string(),
-  email: z.string().email()
+  email: z.string().email(),
 });
 
 type User = {
@@ -25,7 +25,7 @@ export const options: NextAuthOptions = {
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID ?? "",
-      clientSecret: process.env.GITHUB_CLIENT_SECRET ?? ""
+      clientSecret: process.env.GITHUB_CLIENT_SECRET ?? "",
     }),
     Credentials({
       name: "Credentials",
@@ -33,18 +33,18 @@ export const options: NextAuthOptions = {
         username: {
           label: "Username",
           type: "text",
-          placeholder: "jsmith"
+          placeholder: "jsmith",
         },
         email: {
           label: "Email",
           type: "text",
-          placeholder: "jsmith@example.com"
+          placeholder: "jsmith@example.com",
         },
         password: {
           label: "Password",
           type: "password",
-          placeholder: "password"
-        }
+          placeholder: "password",
+        },
       },
       async authorize(
         credentials:
@@ -60,7 +60,6 @@ export const options: NextAuthOptions = {
           }
 
           let user = await getUserByUsername(credentials?.username ?? "");
-          console.log("USER", user);
 
           if (!user) {
             user = await getOrCreateUser(
@@ -76,7 +75,6 @@ export const options: NextAuthOptions = {
           );
 
           if (!loginSuccessful) {
-            console.log("INCORRECT PASSWORD");
             return null;
           }
 
@@ -84,13 +82,13 @@ export const options: NextAuthOptions = {
             email: user.email,
             password: user.password,
             name: user.userName,
-            id: user.id.toString()
+            id: user.id.toString(),
           };
         } catch (error) {
           console.error("Error in authorize function:", error);
           return null;
         }
-      }
-    })
-  ]
+      },
+    }),
+  ],
 };

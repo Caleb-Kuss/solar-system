@@ -7,11 +7,15 @@ export default async function Apod() {
   const today = moment().startOf("day").format("YYYY-MM-DD");
 
   const marsRoverData = await fetch(
-    `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?api_key=${process.env.NASA_API_KEY}&earth_date=2015-6-3`
+    `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?api_key=${process.env.NASA_API_KEY}&earth_date=2024-02-01`
   );
   const { photos: marsRoverPhotos } = await marsRoverData.json();
 
-  if (!marsRoverPhotos.length) throw new Error("No Images found");
+  //TODO: handle this return error better This breaks when the date is the current day
+  // Gotta figure out how to get the last date photos have been stored in Nasa api
+  if (!marsRoverPhotos.length) {
+    return <div>There are no Mars rover photos from today</div>;
+  }
 
   return (
     <div className="bg-gray-800 text-white p-8">
