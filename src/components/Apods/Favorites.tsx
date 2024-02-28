@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { markImageAsFavorite } from "@/app/actions/favoriteApod";
+import {
+  markImageAsFavorite,
+  unMarkImageAsFavorite,
+} from "@/app/actions/favoriteApod";
 import { Apod } from "@/types/Apods/apods";
 import { Session } from "@/types/Users/users";
 
@@ -16,16 +19,23 @@ export default function ApodClient({ data }: any) {
     if (!session) {
       setErrormsg("You must log in to favorite an image");
       setTimeout(() => setErrormsg(""), 5000);
-    } else {
+    }
+    if (!isFavorite) {
       const data = await markImageAsFavorite(session.user, apod);
-
       if (!data) {
         setErrormsg(
           "There was an issue with saving the image as a favorite, please try again"
         );
-      } else {
-        setIsFavorite((prevIsFavorite) => !prevIsFavorite);
       }
+      setIsFavorite(true);
+    } else {
+      const data = await unMarkImageAsFavorite(session.user, apod);
+      if (!data) {
+        setErrormsg(
+          "There was an issue with removing this image as a favorite, please try again"
+        );
+      }
+      setIsFavorite(false);
     }
   };
 
