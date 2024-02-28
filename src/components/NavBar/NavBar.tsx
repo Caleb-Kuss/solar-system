@@ -13,6 +13,15 @@ export default async function Navbar() {
             <span className="cursor-pointer hover:text-gray-300">Home</span>
           </Link>
         </li>
+        {session && (
+          <li>
+            <Link href="/dashboard">
+              <span className="cursor-pointer hover:text-gray-300">
+                Dashboard
+              </span>
+            </Link>
+          </li>
+        )}
         {session ? (
           <li>
             <Link href="/api/auth/signout">
@@ -26,15 +35,6 @@ export default async function Navbar() {
             <Link href="/api/auth/signin">
               <span className="cursor-pointer hover:text-gray-300">
                 Sign In
-              </span>
-            </Link>
-          </li>
-        )}
-        {session && (
-          <li>
-            <Link href="/dashboard">
-              <span className="cursor-pointer hover:text-gray-300">
-                Dashboard
               </span>
             </Link>
           </li>

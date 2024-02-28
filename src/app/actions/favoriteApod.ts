@@ -28,23 +28,27 @@ export async function markImageAsFavorite(userData: User, apod: Apod) {
           hdUrl: apod.hdurl,
           copyRight: apod.copyright,
           datePosted: apod.date,
-          favoritedById: user.id,
         },
       });
     }
 
-    const connectApodToUser = await prisma.user.update({
-      where: { email: userData.email },
-      data: {
-        favoriteApods: {
-          connect: { id: existingApod.id },
-        },
-      },
+    let existingFavorite = await prisma.favoriteApod.findFirst({
+      where: { userId: user.id, apodId: existingApod.id },
     });
-    if (!connectApodToUser) {
+
+    if (!existingFavorite) {
+      existingFavorite = await prisma.favoriteApod.create({
+        data: {
+          user: { connect: { id: user.id } },
+          apod: { connect: { id: existingApod.id } },
+        },
+      });
+    }
+
+    if (!existingFavorite) {
       console.error("Could not save the Apod as a favorite for the user.");
     }
-    return connectApodToUser;
+    return existingFavorite;
   } catch (error) {
     console.error("Error marking image as favorite:", error);
     throw error;
@@ -64,21 +68,27 @@ export async function unMarkImageAsFavorite(userData: User, apod: Apod) {
       where: { url: apod.url },
     });
 
-    const updatedUser = await prisma.user.update({
-      where: { email: userData.email },
-      data: {
-        favoriteApods: {
-          disconnect: { id: existingApod?.id },
-        },
+    if (!existingApod) {
+      throw new Error("Apod not found");
+    }
+
+    const favoriteApodToDelete = await prisma.favoriteApod.findFirst({
+      where: {
+        userId: user.id,
+        apodId: existingApod.id,
       },
     });
 
-    if (!updatedUser) {
-      console.error("Could not remove the Apod as a favorite for the user.");
+    if (!favoriteApodToDelete) {
+      console.error("FavoriteApod not found for deletion.");
+      return;
     }
-    return updatedUser;
+
+    return prisma.favoriteApod.delete({
+      where: { id: favoriteApodToDelete.id },
+    });
   } catch (error) {
-    console.error("Error marking image as favorite:", error);
+    console.error("Error unmarking image as favorite:", error);
     throw error;
   }
 }

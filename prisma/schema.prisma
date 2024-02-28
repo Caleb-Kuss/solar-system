@@ -14,47 +14,48 @@ datasource db {
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  email          String   @unique
-  userName       String  @unique
-  password       String
-  role           Role     @default(USER)
-  favoriteApods  Apod[]   
-  favoriteEpics  Epic[] 
-  favoriteRover MarsRoverData[] 
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  userName  String   @unique
+  password  String
+  role      Role     @default(USER)
+  FavoriteApod FavoriteApod[]
 }
 
 model Apod {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  title          String   @db.VarChar(255)
-  explanation    String
-  url            String
-  hdUrl          String?
-  copyRight      String?
-  datePosted     String?
-  favoritedBy    User?   @relation(fields: [favoritedById], references: [id])
-  favoritedById  Int? 
+  id           String         @id @default(uuid())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  title        String         @db.VarChar(255)
+  explanation  String
+  url          String
+  hdUrl        String?
+  copyRight    String?
+  datePosted   String?
+  FavoriteApod FavoriteApod[]
+}
+
+model FavoriteApod {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  apod   Apod   @relation(fields: [apodId], references: [id])
+  apodId String
 }
 
 model Epic {
-  id             Int       @id @default(autoincrement())
-  jsonData       Json      
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  favoritedBy    User?   @relation(fields: [favoritedById], references: [id])
-  favoritedById  Int?
+  id        String   @id @default(uuid())
+  jsonData  Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model MarsRoverData {
-  id             Int       @id @default(autoincrement())
-  jsonData       Json      
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  favoritedBy    User?   @relation(fields: [favoritedById], references: [id])
-  favoritedById  Int?
+  id        String   @id @default(uuid())
+  jsonData  Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {
