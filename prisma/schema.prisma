@@ -14,13 +14,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  userName  String   @unique
-  password  String
-  role      Role     @default(USER)
-  FavoriteApod FavoriteApod[]
+  id                    String                  @id @default(uuid())
+  createdAt             DateTime                @default(now())
+  email                 String                  @unique
+  userName              String                  @unique
+  password              String
+  role                  Role                    @default(USER)
+  FavoriteApod          FavoriteApod[]
+  FavoriteEpic          FavoriteEpic[]
+  FavoriteMarsRoverData FavoriteMarsRoverData[]
 }
 
 model Apod {
@@ -45,17 +47,35 @@ model FavoriteApod {
 }
 
 model Epic {
-  id        String   @id @default(uuid())
-  jsonData  Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String         @id @default(uuid())
+  jsonData     Json
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  FavoriteEpic FavoriteEpic[]
+}
+
+model FavoriteEpic {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  epic   Epic   @relation(fields: [epicId], references: [id])
+  epicId String
 }
 
 model MarsRoverData {
-  id        String   @id @default(uuid())
-  jsonData  Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                    String                  @id @default(uuid())
+  jsonData              Json
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  FavoriteMarsRoverData FavoriteMarsRoverData[]
+}
+
+model FavoriteMarsRoverData {
+  id              String        @id @default(uuid())
+  user            User          @relation(fields: [userId], references: [id])
+  userId          String
+  marsRoverData   MarsRoverData @relation(fields: [marsRoverDataId], references: [id])
+  marsRoverDataId String
 }
 
 enum Role {

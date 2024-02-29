@@ -2,12 +2,9 @@ import Image from "next/image";
 import moment from "moment";
 import Favorites from "../../components/Apods/Favorites";
 import { MarsPhoto } from "@/types/MarsRover/marsRover";
-
 export default async function Apod() {
-  const today = moment().startOf("day").format("YYYY-MM-DD");
-
   const marsRoverData = await fetch(
-    `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?api_key=${process.env.NASA_API_KEY}&earth_date=2024-02-01`
+    `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?api_key=${process.env.NASA_API_KEY}&earth_date=2024-02-19`
   );
   const { photos: marsRoverPhotos } = await marsRoverData.json();
 
