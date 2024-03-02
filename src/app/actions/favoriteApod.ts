@@ -121,3 +121,28 @@ export async function getExistingApod(userData: any, apod: Apod) {
     throw error;
   }
 }
+
+export async function getFavoriteApods(userData: User) {
+  console.log("userData: ", userData);
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email: userData.email },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const favoriteApods = await prisma.favoriteApod.findMany({
+      where: { userId: user.id },
+      include: { apod: true },
+    });
+    console.log("favoriteApods: ", favoriteApods);
+
+    return favoriteApods;
+  } catch (error) {
+    console.error("Error getting favorite Apods:", error);
+    throw error;
+  }
+}

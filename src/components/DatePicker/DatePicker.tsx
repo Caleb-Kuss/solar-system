@@ -17,10 +17,9 @@ export default function MarsRoverParent({ children }: any) {
         <DatePicker
           selected={startDate}
           onChange={(date: any) => setStartDate(date)}
-          className="datepicker border rounded-md shadow-sm w-full" // Centering
-          wrapperClassName="flex justify-center" // Centering wrapper
+          className="datepicker border rounded-md shadow-sm w-full"
+          wrapperClassName="flex justify-center"
           customInput={
-            // Custom input for precise style control
             <input style={{ color: "black", textAlign: "center" }} />
           }
         />
