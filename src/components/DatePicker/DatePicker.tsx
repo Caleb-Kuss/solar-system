@@ -79,7 +79,6 @@ export default function MarsRoverParent() {
             ))}
           </select>
         </div>
-        ;
       </div>
       {loading && <SpaceSpinner />}
       {error && (
