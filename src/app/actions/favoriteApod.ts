@@ -1,6 +1,6 @@
 "use server";
 
-import { Apod } from "@/types/Apods/apods";
+import { Apod, FavoriteApod } from "@/types/Apods/apods";
 import { User } from "@/types/Users/users";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
@@ -89,6 +89,35 @@ export async function unMarkImageAsFavorite(userData: User, apod: Apod) {
     });
   } catch (error) {
     console.error("Error unmarking image as favorite:", error);
+    throw error;
+  }
+}
+
+export async function getExistingApod(userData: any, apod: Apod) {
+  try {
+    if (!userData) return null;
+    const existingApod = await prisma.apod.findFirst({
+      where: { url: apod.url },
+    });
+
+    const user = await prisma.user.findUnique({
+      where: { email: userData.email },
+    });
+
+    if (!user) {
+      return null;
+    }
+    if (!existingApod) {
+      return null;
+    }
+
+    const existingFavorite = await prisma.favoriteApod.findFirst({
+      where: { userId: user.id, apodId: existingApod.id },
+    });
+
+    return existingFavorite;
+  } catch (error) {
+    console.error("Error getting existing Apod:", error);
     throw error;
   }
 }

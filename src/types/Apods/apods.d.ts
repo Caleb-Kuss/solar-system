@@ -1,3 +1,5 @@
+import { User } from "../Users/users";
+
 export type Apod = {
   copyright: string;
   date: string;
@@ -7,4 +9,12 @@ export type Apod = {
   service_version: string;
   title: string;
   url: string;
+};
+
+export type FavoriteApod = {
+  id: String;
+  user: User;
+  userId: String;
+  apod: Apod;
+  apodId: String;
 };
