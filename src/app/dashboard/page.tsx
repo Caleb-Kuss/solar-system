@@ -48,7 +48,32 @@ export default function Dashboard() {
               />
             </svg>
             <span>Favorite APODs</span>
-          </button>{" "}
+          </button>
+        </Link>
+        <Link href="/dashboard/favorites/marsPhotos" className="mt-4">
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 14l9-5-9-5-9 5 9 5z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 12h14"
+              />
+            </svg>
+            <span>Favorite Mars Photos</span>
+          </button>
         </Link>
       </div>
     </>

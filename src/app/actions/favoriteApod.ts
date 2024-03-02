@@ -93,26 +93,23 @@ export async function unMarkImageAsFavorite(userData: User, apod: Apod) {
   }
 }
 
-export async function getExistingApod(userData: any, apod: Apod) {
+export async function getExistingApod(
+  { email }: any,
+  { apodId }: FavoriteApod
+) {
   try {
-    if (!userData) return null;
-    const existingApod = await prisma.apod.findFirst({
-      where: { url: apod.url },
-    });
+    if (!email) return null;
 
     const user = await prisma.user.findUnique({
-      where: { email: userData.email },
+      where: { email: email },
     });
 
     if (!user) {
       return null;
     }
-    if (!existingApod) {
-      return null;
-    }
 
     const existingFavorite = await prisma.favoriteApod.findFirst({
-      where: { userId: user.id, apodId: existingApod.id },
+      where: { userId: user.id, apodId: apodId as string },
     });
 
     return existingFavorite;
@@ -123,8 +120,6 @@ export async function getExistingApod(userData: any, apod: Apod) {
 }
 
 export async function getFavoriteApods(userData: User) {
-  console.log("userData: ", userData);
-
   try {
     const user = await prisma.user.findUnique({
       where: { email: userData.email },
@@ -138,7 +133,6 @@ export async function getFavoriteApods(userData: User) {
       where: { userId: user.id },
       include: { apod: true },
     });
-    console.log("favoriteApods: ", favoriteApods);
 
     return favoriteApods;
   } catch (error) {

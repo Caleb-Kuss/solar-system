@@ -1,12 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getFavoriteApods } from "@/app/actions/favoriteApod";
-import Link from "next/link";
-import Image from "next/image"; // Import Image component
+import Image from "next/image";
 import Favorites from "@/components/Apods/Favorites";
 import Navbar from "@/components/NavBar/NavBar";
-const prisma = new PrismaClient();
 
 export default async function FavoriteApods() {
   const session = await getServerSession(options);
@@ -21,7 +18,7 @@ export default async function FavoriteApods() {
       </h1>
 
       <div>
-        <div className="bg-gray-800 text-white p-8 flex flex-col items-center">
+        <div className="bg-gray-800 text-white p-8 flex flex-col items-center h-screen">
           {data.map((apod) => (
             <div
               key={apod.id}

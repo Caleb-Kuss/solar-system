@@ -65,3 +65,11 @@ export type MarsPhoto = {
     ];
   };
 };
+
+export type FavoriteMarsPhoto = {
+  id: String;
+  user: User;
+  userId: String;
+  marsRoverData: MarsPhoto;
+  marsRoverDataId: String;
+};

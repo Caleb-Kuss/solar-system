@@ -2,24 +2,30 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import {
-  getExistingApod,
-  markImageAsFavorite,
-  unMarkImageAsFavorite,
-} from "@/app/actions/favoriteApod";
-import { Apod, FavoriteApod } from "@/types/Apods/apods";
 import { Session } from "@/types/Users/users";
 import SpaceSpinner from "../Loaders/Spinner";
+import {
+  getExistingMarsPhoto,
+  markImageAsFavorite,
+  unMarkImageAsFavorite,
+} from "@/app/actions/favoriteRover";
+import { FavoriteMarsPhoto, MarsPhoto } from "@/types/MarsRover/marsRover";
 
-export default function ApodClient({ data }: any) {
+export default function RoverClient({ data }: any) {
   const { data: session } = useSession();
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [errormsg, setErrormsg] = useState("");
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const checkIfFavorite = async (session: Session, apod: FavoriteApod) => {
-      const existingFavorite = await getExistingApod(session?.user, apod);
+    const checkIfFavorite = async (
+      session: Session,
+      marsPhoto: FavoriteMarsPhoto
+    ) => {
+      const existingFavorite = await getExistingMarsPhoto(
+        session?.user,
+        marsPhoto
+      );
 
       if (existingFavorite) {
         setIsFavorite(true);
@@ -32,7 +38,10 @@ export default function ApodClient({ data }: any) {
   const timeoutErrorMessage = () => {
     setTimeout(() => setErrormsg(""), 5000);
   };
-  const handleFavoriteToggle = async (session: Session, apod: Apod) => {
+  const handleFavoriteToggle = async (
+    session: Session,
+    marsPhoto: MarsPhoto
+  ) => {
     if (!session) {
       setErrormsg("You must log in to favorite an image");
       timeoutErrorMessage();
@@ -40,7 +49,7 @@ export default function ApodClient({ data }: any) {
     }
     if (!isFavorite) {
       setLoading(true);
-      const data = await markImageAsFavorite(session.user, apod);
+      const data = await markImageAsFavorite(session.user, marsPhoto);
       if (!data) {
         setErrormsg(
           "There was an issue with saving the image as a favorite, please try again"
@@ -51,7 +60,7 @@ export default function ApodClient({ data }: any) {
       setLoading(false);
     } else {
       setLoading(true);
-      const data = await unMarkImageAsFavorite(session.user, apod);
+      const data = await unMarkImageAsFavorite(session.user, marsPhoto);
 
       if (!data) {
         setErrormsg(

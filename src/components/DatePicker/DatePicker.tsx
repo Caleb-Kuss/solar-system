@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import { MarsRoverData } from "@/app/actions/getEpic";
 import "react-datepicker/dist/react-datepicker.css";
 import Image from "next/image";
 import { MarsPhoto } from "@/types/MarsRover/marsRover";
 import SpaceSpinner from "../Loaders/Spinner";
 import ScrollToTopButton from "../Top/Top";
-import { getManifest } from "@/app/actions/roverData";
+import { getManifest, MarsRoverData } from "@/app/actions/roverData";
+import FavoriteRover from "../marsRover/FavoriteRover";
 
 export default function MarsRoverParent() {
   const [startDate, setStartDate] = useState(new Date());
@@ -117,6 +117,7 @@ export default function MarsRoverParent() {
                     height={500}
                   />
                 </div>
+                <FavoriteRover marsPhoto={photo} />
                 <p className="mt-2">
                   Rover Name: {photo.rover.name}, Rover ID: {photo.rover.id},
                   Rover Camera: {photo.camera.full_name}
