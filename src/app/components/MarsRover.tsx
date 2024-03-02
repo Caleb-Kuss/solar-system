@@ -2,9 +2,9 @@ import Image from "next/image";
 import moment from "moment";
 import Favorites from "../../components/Apods/Favorites";
 import { MarsPhoto } from "@/types/MarsRover/marsRover";
-export default async function Apod() {
+export default async function MarsRoverData() {
   const marsRoverData = await fetch(
-    `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?api_key=${process.env.NASA_API_KEY}&earth_date=2024-02-19`
+    `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?api_key=${process.env.NASA_API_KEY}&earth_date=2024-04-18`
   );
   const { photos: marsRoverPhotos } = await marsRoverData.json();
 
@@ -16,7 +16,9 @@ export default async function Apod() {
 
   return (
     <div className="bg-gray-800 text-white p-8">
-      <h1 className="text-3xl font-bold mb-4 text-center">Mars Rover Images</h1>
+      <h1 className="text-3xl font-bold mb-4 text-center">
+        Mars Rover Images Found: {marsRoverPhotos.length}
+      </h1>
       <div className="flex flex-wrap justify-center">
         {marsRoverPhotos.map((photo: MarsPhoto) => (
           <div key={photo.id} className="mb-4 text-center mx-2">

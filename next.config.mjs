@@ -3,11 +3,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**.nasa.gov",
+        hostname: "*.nasa.gov",
       },
       {
-        protocol: "https",
         hostname: "youtube.com",
       },
     ],

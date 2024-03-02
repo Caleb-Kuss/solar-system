@@ -5,9 +5,7 @@ export default function MarsRoverPage() {
   return (
     <>
       <Navbar />
-      <DatePicker>
-        <MarsRover />
-      </DatePicker>
+      <DatePicker />
     </>
   );
 }

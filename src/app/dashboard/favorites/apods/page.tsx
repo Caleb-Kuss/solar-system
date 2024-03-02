@@ -21,11 +21,11 @@ export default async function FavoriteApods() {
       </h1>
 
       <div>
-        <div className="bg-gray-800 text-white p-8 flex flex-col items-center h-screen">
+        <div className="bg-gray-800 text-white p-8 flex flex-col items-center">
           {data.map((apod) => (
             <div
               key={apod.id}
-              className="bg-gray-800 text-white p-8 flex flex-col items-center h-screen"
+              className="bg-gray-800 text-white p-8 flex flex-col items-center"
             >
               <h2 className="text-3xl font-bold mb-2">{apod.apod.title}</h2>
               <div className="mx-auto w-full" style={{ maxWidth: "500px" }}>
