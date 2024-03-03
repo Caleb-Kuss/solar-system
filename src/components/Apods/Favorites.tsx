@@ -5,18 +5,16 @@ import { useSession } from "next-auth/react";
 import {
   getExistingApod,
   markImageAsFavorite,
-  unMarkImageAsFavorite,
+  unMarkImageAsFavorite
 } from "@/app/actions/favoriteApod";
 import { Apod, FavoriteApod } from "@/types/Apods/apods";
 import { Session } from "@/types/Users/users";
-import SpaceSpinner from "../Loaders/Spinner";
 
 export default function ApodClient({ data }: any) {
   const { data: session } = useSession();
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [errormsg, setErrormsg] = useState("");
-  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const checkIfFavorite = async (session: Session, apod: FavoriteApod) => {
       const existingFavorite = await getExistingApod(session?.user, apod);
@@ -24,7 +22,6 @@ export default function ApodClient({ data }: any) {
       if (existingFavorite) {
         setIsFavorite(true);
       }
-      setLoading(false);
     };
     if (session) checkIfFavorite(session as Session, data);
   }, [session, data]);
@@ -39,7 +36,6 @@ export default function ApodClient({ data }: any) {
       return;
     }
     if (!isFavorite) {
-      setLoading(true);
       const data = await markImageAsFavorite(session.user, apod);
       if (!data) {
         setErrormsg(
@@ -48,9 +44,7 @@ export default function ApodClient({ data }: any) {
         timeoutErrorMessage();
       }
       setIsFavorite(true);
-      setLoading(false);
     } else {
-      setLoading(true);
       const data = await unMarkImageAsFavorite(session.user, apod);
 
       if (!data) {
@@ -60,15 +54,13 @@ export default function ApodClient({ data }: any) {
         timeoutErrorMessage();
       }
       setIsFavorite(false);
-      setLoading(false);
     }
   };
 
   return (
     <>
-      {loading && <SpaceSpinner />}
       {errormsg && (
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 bg-black text-red-500 p-4 rounded-lg shadow-lg z-50">
+        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 bg-black text-red-500 p-4 rounded-lg shadow-lg z-50">
           <span className="mr-2">⚠</span>
           {errormsg}
         </div>

@@ -9,50 +9,61 @@ export default async function FavoriteApods() {
   const session = await getServerSession(options);
   if (!session) return null;
   const data = await getFavoriteApods(session.user as any);
-
+  const totalApods = data.length;
+  let message;
+  if (totalApods === 1) {
+    message = "1 favorite Astronomy Picture of the Day";
+  } else {
+    message = `${totalApods} favorite Astronomy Pictures of the Day`;
+  }
   return (
-    <div>
+    <div className="bg-gray-800 text-white min-h-screen">
       <Navbar />
-      <h1 className="text-3xl bg-gray-800 text-white p-8 flex flex-col items-center ">
-        Favorite Apods
+
+      <h1 className="text-3xl bg-gray-800 text-white p-4 m-8 md:p-8 flex flex-col items-center">
+        {message}
       </h1>
 
-      <div>
-        <div className="bg-gray-800 text-white p-8 flex flex-col items-center h-screen">
-          {data.map((apod) => (
-            <div
-              key={apod.id}
-              className="bg-gray-800 text-white p-8 flex flex-col items-center"
-            >
-              <h2 className="text-3xl font-bold mb-2">{apod.apod.title}</h2>
-              <div className="mx-auto w-full" style={{ maxWidth: "500px" }}>
-                {apod.apod.url.includes("youtube") ? (
-                  <iframe
-                    src={apod.apod.url}
-                    title={apod.apod.title}
-                    width="500"
-                    height="281"
-                    allowFullScreen
-                    className="border-2 border-white rounded-lg shadow-md bg-black mx-auto block"
-                  />
-                ) : (
-                  <Image
-                    className="mt-2 rounded"
-                    width={500}
-                    height={500}
-                    src={apod.apod.url}
-                    alt={apod.apod.title}
-                  />
-                )}
-              </div>
-              <Favorites data={apod} />
-              <p className="m-2">{apod.apod.explanation}</p>
-              {apod.apod.copyRight && (
-                <p className="text-sm">&copy; {apod.apod.copyRight}</p>
+      <div className="bg-gray-800 text-white">
+        {data.map((apod) => (
+          <div
+            key={apod.id}
+            className="bg-gray-800 text-white p-4 md:p-8 flex flex-col items-center"
+          >
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">
+              {apod.apod.title}
+            </h2>
+            <div className="mx-auto w-full max-w-md">
+              {apod.apod.url.includes("youtube") ? (
+                <iframe
+                  src={apod.apod.url}
+                  title={apod.apod.title}
+                  width="100%"
+                  height="281"
+                  allowFullScreen
+                  className="border-2 border-white rounded-lg shadow-md bg-black mx-auto block"
+                />
+              ) : (
+                <Image
+                  className="mt-2 rounded"
+                  width={500}
+                  height={500}
+                  src={apod.apod.url}
+                  alt={apod.apod.title}
+                />
               )}
             </div>
-          ))}
-        </div>
+            <div className="flex justify-center mt-2">
+              <Favorites data={apod} />
+            </div>
+            <p className="m-2 text-center">{apod.apod.explanation}</p>
+            {apod.apod.copyRight && (
+              <p className="text-sm text-center">
+                &copy; {apod.apod.copyRight}
+              </p>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

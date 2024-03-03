@@ -51,15 +51,15 @@ export default function MarsRoverParent() {
   }, [startDate, selectedRover]);
 
   return (
-    <div className="bg-gray-800 text-white p-8">
+    <div className="bg-gray-800 text-white md:p-8">
       <h4 className="flex justify-center mb-4">
         Choose an earth date to see the images that were taken on mars that day
       </h4>
-      <div className="flex flex-wrap justify-center">
+      <div className="flex flex-col md:flex-row md:items-center justify-center mb-4">
         <DatePicker
           selected={startDate}
           onChange={(date: any) => setStartDate(date)}
-          className="datepicker border rounded-md shadow-sm w-full"
+          className="datepicker border rounded-md shadow-sm w-full md:w-auto mb-2 md:mb-0"
           wrapperClassName="flex justify-center"
           customInput={
             <input style={{ color: "black", textAlign: "center" }} />
@@ -69,7 +69,7 @@ export default function MarsRoverParent() {
           <select
             value={selectedRover}
             onChange={(e) => handleRoverChange(e.target.value)}
-            className="border rounded-md shadow-sm w-full text-black"
+            className="border rounded-md shadow-sm w-full md:w-auto ml-0 md:ml-2 text-black"
           >
             <option value="">Select a Rover</option>
             {rovers.map((rover) => (
@@ -82,12 +82,12 @@ export default function MarsRoverParent() {
       </div>
       {loading && <SpaceSpinner />}
       {error && (
-        <div className="bg-gray-800 text-white p-8 h-screen flex justify-center mb-4">
+        <div className="bg-gray-800 text-white p-4 md:p-8 h-screen flex justify-center mb-4">
           <h1 className="text-3xl">{error}</h1>
         </div>
       )}
       {!data.length && !error && (
-        <div className="bg-gray-800 text-white p-8 h-screen">
+        <div className="bg-gray-800 text-white p-4 md:p-8 h-screen flex flex-col justify-center ">
           <div>
             <h1 className="text-3xl font-bold mb-4 text-center">
               No Images found for this date
@@ -96,7 +96,7 @@ export default function MarsRoverParent() {
         </div>
       )}
       {data.length > 0 && (
-        <div className="bg-gray-800 text-white p-8 ">
+        <div className="bg-gray-800 text-white p-4 md:p-8">
           <h1 className="text-3xl font-bold mb-4 text-center">
             Mars Rover Images {data.length} images found!
           </h1>
@@ -106,10 +106,7 @@ export default function MarsRoverParent() {
                 <h2 className="text-xl font-semibold">
                   Earth date this photo was taken {photo.earth_date}
                 </h2>
-                <div
-                  className="w-full"
-                  style={{ maxWidth: "500px", margin: "auto" }}
-                >
+                <div className="w-full max-w-md mx-auto">
                   <Image
                     src={photo.img_src}
                     alt="photo of Mars"
