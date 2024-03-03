@@ -7,9 +7,14 @@ export default async function Apod() {
   const apod = await getApod.json();
 
   let video;
-  if (apod.url.startsWith("https://youtube.com")) {
+  if (apod.url.includes("youtube")) {
+    console.log("video", apod.url);
+
     video = true;
   }
+  console.log("apod", apod.url.includes("youtube"));
+  console.log("video", video);
+
   return (
     <div className="bg-gray-800 text-white p-8 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-4">Astronomy Picture of the Day</h1>

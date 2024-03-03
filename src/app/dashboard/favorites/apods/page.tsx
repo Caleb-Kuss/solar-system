@@ -26,7 +26,7 @@ export default async function FavoriteApods() {
             >
               <h2 className="text-3xl font-bold mb-2">{apod.apod.title}</h2>
               <div className="mx-auto w-full" style={{ maxWidth: "500px" }}>
-                {apod.apod.url.startsWith("https://youtube.com") ? (
+                {apod.apod.url.includes("youtube") ? (
                   <iframe
                     src={apod.apod.url}
                     title={apod.apod.title}
