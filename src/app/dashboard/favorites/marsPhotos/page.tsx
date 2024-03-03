@@ -8,8 +8,8 @@ import { getFavoriteMarsPhotos } from "@/app/actions/favoriteRover";
 export default async function FavoriteApods() {
   const session = await getServerSession(options);
   if (!session) return null;
-  const data = await getFavoriteMarsPhotos(session.user as any);
 
+  const data: any = await getFavoriteMarsPhotos(session.user as any);
   if (!data) return null;
   return (
     <div>
@@ -20,7 +20,7 @@ export default async function FavoriteApods() {
 
       <div>
         <div className="bg-gray-800 text-white p-8 flex flex-col items-center">
-          {data.map((marsData) => (
+          {data.map((marsData: any) => (
             <div
               key={marsData.marsRoverData.jsonData.id}
               className="bg-gray-800 text-white p-8 flex flex-col items-center"

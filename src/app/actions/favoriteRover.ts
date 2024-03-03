@@ -160,6 +160,7 @@ export async function getFavoriteMarsPhotos(userData: User) {
       where: { userId: user.id },
       include: { marsRoverData: true },
     });
+    revalidatePath("/dashboard/favorites/marsPhotos");
 
     return favoriteMarsPhotos;
   } catch (error) {
