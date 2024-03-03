@@ -8,12 +8,8 @@ export default async function Apod() {
 
   let video;
   if (apod.url.includes("youtube")) {
-    console.log("video", apod.url);
-
     video = true;
   }
-  console.log("apod", apod.url.includes("youtube"));
-  console.log("video", video);
 
   return (
     <div className="bg-gray-800 text-white p-8 flex flex-col items-center">
