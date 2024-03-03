@@ -117,7 +117,7 @@ export default function MarsRoverParent() {
                     height={500}
                   />
                 </div>
-                <FavoriteRover marsPhoto={photo} />
+                <FavoriteRover data={photo} />
                 <p className="mt-2">
                   Rover Name: {photo.rover.name}, Rover ID: {photo.rover.id},
                   Rover Camera: {photo.camera.full_name}

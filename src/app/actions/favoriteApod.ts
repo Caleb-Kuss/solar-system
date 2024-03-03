@@ -3,6 +3,7 @@
 import { Apod, FavoriteApod } from "@/types/Apods/apods";
 import { User } from "@/types/Users/users";
 import { PrismaClient } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 const prisma = new PrismaClient();
 
 export async function markImageAsFavorite(userData: User, apod: Apod) {
@@ -83,6 +84,7 @@ export async function unMarkImageAsFavorite(userData: User, apod: Apod) {
       console.error("FavoriteApod not found for deletion.");
       return;
     }
+    revalidatePath("/dashboard/favorites/apods");
 
     return prisma.favoriteApod.delete({
       where: { id: favoriteApodToDelete.id },

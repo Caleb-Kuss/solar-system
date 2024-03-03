@@ -61,7 +61,6 @@ export default function RoverClient({ data }: any) {
     } else {
       setLoading(true);
       const data = await unMarkImageAsFavorite(session.user, marsPhoto);
-
       if (!data) {
         setErrormsg(
           "There was an issue with removing this image as a favorite, please try again"

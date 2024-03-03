@@ -3,6 +3,8 @@
 import { FavoriteMarsPhoto, MarsPhoto } from "@/types/MarsRover/marsRover";
 import { User } from "@/types/Users/users";
 import { PrismaClient } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+
 const prisma = new PrismaClient();
 
 export async function markImageAsFavorite(
@@ -13,7 +15,6 @@ export async function markImageAsFavorite(
     const user = await prisma.user.findUnique({
       where: { email: userData.email },
     });
-    console.log("user: ", user);
 
     if (!user) {
       throw new Error("User not found");
@@ -53,10 +54,9 @@ export async function markImageAsFavorite(
     throw error;
   }
 }
-export async function unMarkImageAsFavorite(
-  userData: User,
-  marsPhoto: MarsPhoto
-) {
+export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
+  let existingMarsData;
+  let id;
   try {
     const user = await prisma.user.findUnique({
       where: { email: userData.email },
@@ -66,9 +66,17 @@ export async function unMarkImageAsFavorite(
       throw new Error("User not found");
     }
 
-    let existingMarsData = await prisma.marsRoverData.findFirst({
-      where: { jsonData: { equals: marsPhoto } },
-    });
+    if (marsPhoto.marsRoverDataId) {
+      existingMarsData = await prisma.marsRoverData.findFirst({
+        where: { jsonData: { equals: marsPhoto.marsRoverDataID } },
+      });
+      id = marsPhoto.marsRoverDataId;
+    } else {
+      existingMarsData = await prisma.marsRoverData.findFirst({
+        where: { jsonData: { equals: marsPhoto } },
+      });
+      id = existingMarsData?.id;
+    }
 
     if (!existingMarsData) {
       throw new Error("Mars Photo not found");
@@ -78,7 +86,7 @@ export async function unMarkImageAsFavorite(
       await prisma.favoriteMarsRoverData.findFirst({
         where: {
           userId: user.id,
-          marsRoverDataId: existingMarsData.id,
+          marsRoverDataId: id,
         },
       });
 
@@ -87,6 +95,7 @@ export async function unMarkImageAsFavorite(
       return;
     }
 
+    revalidatePath("/dashboard/favorites/marsPhotos");
     return prisma.favoriteMarsRoverData.delete({
       where: { id: favoriteMarsPhotoToDelete.id },
     });
@@ -96,23 +105,38 @@ export async function unMarkImageAsFavorite(
   }
 }
 
-export async function getExistingMarsPhoto(
-  userData: any,
-  { marsRoverDataId }: FavoriteMarsPhoto
-) {
+export async function getExistingMarsPhoto({ email }: any, data: any) {
+  let existingMarsRoverData;
+  let id;
+
   try {
-    if (!userData) return null;
+    if (!email) return null;
+    // already exists its true otherwise its a JSON
+    if (data.marsRoverDataId) {
+      existingMarsRoverData = await prisma.marsRoverData.findFirst({
+        where: { jsonData: { equals: data.marsRoverDataID } },
+      });
+      id = data.marsRoverDataId;
+    } else {
+      existingMarsRoverData = await prisma.marsRoverData.findFirst({
+        where: { jsonData: { equals: data } },
+      });
+      id = existingMarsRoverData?.id;
+    }
 
     const user = await prisma.user.findUnique({
-      where: { email: userData.email },
+      where: { email },
     });
 
     if (!user) {
       return null;
     }
+    if (!existingMarsRoverData) {
+      return null;
+    }
 
     const existingFavorite = await prisma.favoriteMarsRoverData.findFirst({
-      where: { userId: user.id, marsRoverDataId: marsRoverDataId as string },
+      where: { userId: user.id, marsRoverDataId: id },
     });
 
     return existingFavorite;
