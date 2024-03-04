@@ -56,9 +56,9 @@ export default function MarsRoverParent() {
   }, [startDate, selectedRover]);
 
   return (
-    <div className="bg-gray-800 text-white md:p-8">
-      <h4 className="flex justify-center mb-4">
-        Choose an earth date to see the images that were taken on mars that day
+    <div className="bg-gray-800 text-white py-8 px-4 md:p-8">
+      <h4 className="flex justify-center mb-10 text-base md:text-3xl">
+        Explore Mars!
       </h4>
       <div className="flex flex-col md:flex-row md:items-center justify-center mb-4">
         <DatePicker
@@ -70,11 +70,11 @@ export default function MarsRoverParent() {
             <input style={{ color: "black", textAlign: "center" }} />
           }
         />
-        <div className="flex flex-wrap justify-center ml-2">
+        <div className="flex flex-wrap justify-center  mt-8 md:mt-0 md:ml-2">
           <select
             value={selectedRover}
             onChange={(e) => handleRoverChange(e.target.value)}
-            className="border rounded-md shadow-sm w-full md:w-auto ml-0 md:ml-2 text-black"
+            className="border rounded-md shadow-sm w-full md:w-auto ml-0 md:ml-2 text-black text-center"
           >
             <option value="">Select a Rover</option>
             {rovers.map((rover) => (
@@ -88,13 +88,13 @@ export default function MarsRoverParent() {
       {loading && <SpaceSpinner />}
       {error && (
         <div className="bg-gray-800 text-white p-4 md:p-8 h-screen flex justify-center mb-4">
-          <h1 className="text-3xl">{error}</h1>
+          <h1 className="text-basemd:text-3xl">{error}</h1>
         </div>
       )}
       {!data.length && !error && (
         <div className="bg-gray-800 text-white p-4 md:p-8 h-screen flex flex-col justify-center ">
           <div>
-            <h1 className="text-3xl font-bold mb-4 text-center">
+            <h1 className="text-base md:text-3xl font-bold mb-4 text-center">
               No Images found for this date
             </h1>
           </div>

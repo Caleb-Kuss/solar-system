@@ -13,8 +13,8 @@ export default async function Apod() {
   }
 
   return (
-    <div className="bg-gray-800 text-white p-4 md:p-8 flex flex-col items-center">
-      <h1 className="text-2xl md:text-3xl font-bold mb-4">
+    <div className="bg-gray-800 text-white p-4 md:p-8 flex flex-col items-center ">
+      <h1 className="text-base md:text-3xl font-bold mb-4">
         Astronomy Picture of the Day
       </h1>
       <div className="mb-4 w-full md:w-auto">
