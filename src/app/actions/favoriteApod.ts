@@ -3,6 +3,7 @@
 import { Apod, FavoriteApod } from "@/types/Apods/apods";
 import { User } from "@/types/Users/users";
 import { PrismaClient } from "@prisma/client";
+import { log } from "console";
 import { revalidatePath } from "next/cache";
 const prisma = new PrismaClient();
 
@@ -58,7 +59,9 @@ export async function markImageAsFavorite(userData: User, apod: Apod) {
     revalidatePath("/dashboard/favorites/apods");
   }
 }
-export async function unMarkImageAsFavorite(userData: User, apod: Apod) {
+export async function unMarkImageAsFavorite(userData: User, apod: any) {
+  let existingApod;
+
   try {
     const user = await prisma.user.findUnique({
       where: { email: userData.email },
@@ -68,9 +71,15 @@ export async function unMarkImageAsFavorite(userData: User, apod: Apod) {
       throw new Error("User not found");
     }
 
-    const existingApod = await prisma.apod.findFirst({
-      where: { url: apod.url },
-    });
+    if (apod.apodId) {
+      existingApod = await prisma.apod.findFirst({
+        where: { id: apod.apodId as string },
+      });
+    } else {
+      existingApod = await prisma.apod.findFirst({
+        where: { url: apod.url as string },
+      });
+    }
 
     if (!existingApod) {
       throw new Error("Apod not found");
@@ -99,12 +108,20 @@ export async function unMarkImageAsFavorite(userData: User, apod: Apod) {
   }
 }
 
-export async function getExistingApod(
-  { email }: any,
-  { apodId }: FavoriteApod
-) {
+export async function getExistingApod({ email }: User, data: any) {
+  let existingApod;
+  let id;
   try {
     if (!email) return null;
+
+    if (data.apodId) {
+      id = data.apodId;
+    } else {
+      existingApod = await prisma.apod.findFirst({
+        where: { url: data.url as string },
+      });
+      id = existingApod?.id;
+    }
 
     const user = await prisma.user.findUnique({
       where: { email: email },
@@ -115,7 +132,7 @@ export async function getExistingApod(
     }
 
     const existingFavorite = await prisma.favoriteApod.findFirst({
-      where: { userId: user.id, apodId: apodId as string },
+      where: { userId: user.id, apodId: id as string },
     });
 
     return existingFavorite;

@@ -109,13 +109,13 @@ export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
   }
 }
 
-export async function getExistingMarsPhoto({ email }: any, data: any) {
+export async function getExistingMarsPhoto({ email }: User, data: any) {
   let existingMarsRoverData;
   let id;
 
   try {
     if (!email) return null;
-    // already exists its true otherwise its a JSON
+
     if (data.marsRoverDataId) {
       existingMarsRoverData = await prisma.marsRoverData.findFirst({
         where: { jsonData: { equals: data.marsRoverDataID } },
@@ -125,6 +125,7 @@ export async function getExistingMarsPhoto({ email }: any, data: any) {
       existingMarsRoverData = await prisma.marsRoverData.findFirst({
         where: { jsonData: { equals: data } },
       });
+
       id = existingMarsRoverData?.id;
     }
 
@@ -140,7 +141,7 @@ export async function getExistingMarsPhoto({ email }: any, data: any) {
     }
 
     const existingFavorite = await prisma.favoriteMarsRoverData.findFirst({
-      where: { userId: user.id, marsRoverDataId: id },
+      where: { userId: user.id, marsRoverDataId: id as string },
     });
 
     return existingFavorite;
