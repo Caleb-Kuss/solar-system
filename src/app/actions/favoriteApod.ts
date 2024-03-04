@@ -115,11 +115,15 @@ export async function getExistingApod({ email }: User, data: any) {
     if (!email) return null;
 
     if (data.apodId) {
+      existingApod = await prisma.apod.findFirst({
+        where: { id: data.apodId as string },
+      });
       id = data.apodId;
     } else {
       existingApod = await prisma.apod.findFirst({
         where: { url: data.url as string },
       });
+
       id = existingApod?.id;
     }
 
@@ -131,6 +135,9 @@ export async function getExistingApod({ email }: User, data: any) {
       return null;
     }
 
+    if (!existingApod) {
+      return null;
+    }
     const existingFavorite = await prisma.favoriteApod.findFirst({
       where: { userId: user.id, apodId: id as string },
     });
