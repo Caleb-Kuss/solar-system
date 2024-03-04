@@ -10,7 +10,9 @@ export default function MarsRoverPage() {
   return (
     <>
       <Navbar />
-      <DatePicker />
+      <div className="bg-gray-800  min-h-screen">
+        <DatePicker />
+      </div>
     </>
   );
 }
