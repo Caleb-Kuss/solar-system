@@ -5,6 +5,13 @@ import Image from "next/image";
 import Favorites from "@/components/Apods/Favorites";
 import Navbar from "@/components/NavBar/NavBar";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Solar System | Favorite APODs",
+  description: "Your Favorite APODs.",
+};
+
 export default async function FavoriteApods() {
   const session = await getServerSession(options);
   if (!session) return null;

@@ -1,6 +1,12 @@
 import Navbar from "@/components/NavBar/NavBar";
 import Apods from "./components/Apods";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Solar System",
+  description:
+    "See daily Astronomy Picture of the Day (APOD) from NASA. Or explore Mars Rover photos.",
+};
 export default function Home() {
   return (
     <>

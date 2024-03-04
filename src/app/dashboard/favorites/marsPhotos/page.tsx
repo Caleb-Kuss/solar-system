@@ -6,6 +6,13 @@ import Navbar from "@/components/NavBar/NavBar";
 import { getFavoriteMarsPhotos } from "@/app/actions/favoriteRover";
 import ScrollToTopButton from "@/components/Top/Top";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Solar System | Mars Photos",
+  description: "Your Favorite Mars Photos.",
+};
+
 export default async function FavoriteApods() {
   const session = await getServerSession(options);
   if (!session) return null;
