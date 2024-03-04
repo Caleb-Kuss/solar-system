@@ -21,8 +21,8 @@ export default async function Dashboard() {
     <>
       <Navbar />
       <div className="bg-purple-900 text-white min-h-screen flex flex-col items-center justify-start pt-16 px-4">
-        <h1 className="text-3xl font-bold mb-8">
-          {capitalizeFirstLetter(userName)}, Welcome to Your Space Dashboard!
+        <h1 className="text-base font-bold mb-8 md:text-2xl xl:text-5xl">
+          Welcome, {capitalizeFirstLetter(userName)}
         </h1>
         <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Link href="/marsRover">
