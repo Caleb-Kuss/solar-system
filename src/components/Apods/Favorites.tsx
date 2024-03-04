@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import {
   getExistingApod,
   markImageAsFavorite,
-  unMarkImageAsFavorite
+  unMarkImageAsFavorite,
 } from "@/app/actions/favoriteApod";
 import { Apod, FavoriteApod } from "@/types/Apods/apods";
 import { Session } from "@/types/Users/users";
@@ -36,6 +36,7 @@ export default function ApodClient({ data }: any) {
       return;
     }
     if (!isFavorite) {
+      setIsFavorite(true);
       const data = await markImageAsFavorite(session.user, apod);
       if (!data) {
         setErrormsg(
@@ -43,7 +44,6 @@ export default function ApodClient({ data }: any) {
         );
         timeoutErrorMessage();
       }
-      setIsFavorite(true);
     } else {
       const data = await unMarkImageAsFavorite(session.user, apod);
 

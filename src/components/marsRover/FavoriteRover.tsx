@@ -6,7 +6,7 @@ import { Session } from "@/types/Users/users";
 import {
   getExistingMarsPhoto,
   markImageAsFavorite,
-  unMarkImageAsFavorite
+  unMarkImageAsFavorite,
 } from "@/app/actions/favoriteRover";
 import { FavoriteMarsPhoto, MarsPhoto } from "@/types/MarsRover/marsRover";
 
@@ -45,6 +45,7 @@ export default function RoverClient({ data }: any) {
       return;
     }
     if (!isFavorite) {
+      setIsFavorite(true);
       const data = await markImageAsFavorite(session.user, marsPhoto);
       if (!data) {
         setErrormsg(
@@ -52,7 +53,6 @@ export default function RoverClient({ data }: any) {
         );
         timeoutErrorMessage();
       }
-      setIsFavorite(true);
     } else {
       const data = await unMarkImageAsFavorite(session.user, marsPhoto);
       if (!data) {
