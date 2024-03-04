@@ -8,9 +8,12 @@ import SpaceSpinner from "../Loaders/Spinner";
 import ScrollToTopButton from "../Top/Top";
 import { getManifest, MarsRoverData } from "@/app/actions/roverData";
 import FavoriteRover from "../marsRover/FavoriteRover";
+import moment from "moment";
+
+const today = moment().format();
 
 export default function MarsRoverParent() {
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(today);
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +23,9 @@ export default function MarsRoverParent() {
   const handleRoverChange = async (rover: string) => {
     try {
       const data = await getManifest(rover);
-      setStartDate(new Date(data.photo_manifest.max_date));
+      const lastRecievedPhoto = moment(data.photo_manifest.max_date).format();
+
+      setStartDate(lastRecievedPhoto);
       setSelectedRover(rover);
     } catch (error: unknown) {
       setError(error as string);
@@ -57,7 +62,7 @@ export default function MarsRoverParent() {
       </h4>
       <div className="flex flex-col md:flex-row md:items-center justify-center mb-4">
         <DatePicker
-          selected={startDate}
+          selected={new Date(startDate)}
           onChange={(date: any) => setStartDate(date)}
           className="datepicker border rounded-md shadow-sm w-full md:w-auto mb-2 md:mb-0"
           wrapperClassName="flex justify-center"
