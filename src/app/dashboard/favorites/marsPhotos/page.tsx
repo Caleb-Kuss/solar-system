@@ -28,8 +28,8 @@ export default async function FavoriteApods() {
   }
   return (
     <>
+      <Navbar />
       <div className="bg-gray-800 text-white min-h-screen py-8 px-4">
-        <Navbar />
         <h1 className="text-xl md:text-3xl bg-gray-800 text-white p-4 md:p-8 flex flex-col items-center">
           {message}
         </h1>
