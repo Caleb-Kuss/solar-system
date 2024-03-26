@@ -6,15 +6,17 @@ import { Session } from "@/types/Users/users";
 import {
   getExistingMarsPhoto,
   markImageAsFavorite,
-  unMarkImageAsFavorite,
+  unMarkImageAsFavorite
 } from "@/app/actions/favoriteRover";
 import { FavoriteMarsPhoto, MarsPhoto } from "@/types/MarsRover/marsRover";
+import SpaceSpinner from "../Loaders/Spinner";
 
 export default function RoverClient({ data }: any) {
   const { data: session } = useSession();
-
+  const [isLoading, setIsLoading] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [errormsg, setErrormsg] = useState("");
+
   useEffect(() => {
     const checkIfFavorite = async (
       session: Session,
@@ -39,9 +41,13 @@ export default function RoverClient({ data }: any) {
     session: Session,
     marsPhoto: MarsPhoto
   ) => {
+    setIsLoading(true);
+
     if (!session) {
+      setIsFavorite(true);
       setErrormsg("You must log in to favorite an image");
       timeoutErrorMessage();
+      setIsLoading(false);
       return;
     }
     if (!isFavorite) {
@@ -63,10 +69,13 @@ export default function RoverClient({ data }: any) {
       }
       setIsFavorite(false);
     }
+    setIsLoading(false);
   };
 
   return (
     <>
+      {isLoading && <p>Loading...</p>}
+
       {errormsg && (
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 bg-black text-red-500 p-4 rounded-lg shadow-lg z-50">
           <span className="mr-2">⚠</span>
@@ -75,6 +84,7 @@ export default function RoverClient({ data }: any) {
       )}
       <button
         onClick={() => handleFavoriteToggle(session as Session, data)}
+        disabled={isLoading}
         className="p-2 text-yellow-500 relative"
       >
         {isFavorite ? (
