@@ -10,7 +10,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Solar System | Mars Photos",
-  description: "Your Favorite Mars Photos.",
+  description: "Your Favorite Mars Photos."
 };
 
 export default async function FavoriteApods() {
@@ -19,13 +19,14 @@ export default async function FavoriteApods() {
 
   const data: any = await getFavoriteMarsPhotos(session.user as any);
   if (!data) return null;
+
   const totalPhotos = data.length;
-  let message;
-  if (totalPhotos === 1) {
-    message = "1 Favorite Photo of Mars";
-  } else {
-    message = `${totalPhotos} Favorite Photos of Mars`;
-  }
+
+  const message =
+    totalPhotos === 1
+      ? "1 Favorite Photo of Mars"
+      : `${totalPhotos} Favorite Photos of Mars`;
+
   return (
     <>
       <Navbar />

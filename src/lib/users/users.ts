@@ -16,20 +16,23 @@ async function getUsers() {
 
 async function getOrCreateUser(password: string, name: string, email: string) {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(
+      password,
+      Number(process.env.SECRET_SALT_ROUNDS)
+    );
 
     const user = await prisma.user.upsert({
       where: {
-        userName: name,
+        userName: name
       },
       update: {
-        password: hashedPassword,
+        password: hashedPassword
       },
       create: {
         password: hashedPassword,
         userName: name,
-        email: email,
-      },
+        email: email
+      }
     });
 
     return user;
@@ -45,8 +48,8 @@ async function getUserByUsername(username: string) {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        userName: username,
-      },
+        userName: username
+      }
     });
     return user;
   } catch (error) {
