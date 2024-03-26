@@ -19,7 +19,6 @@ export async function markImageAsFavorite(
     if (!user) {
       throw new Error("User not found");
     }
-    console.log("markImageAsFavorite -- marsPhoto", marsPhoto);
 
     let existingMarsData = await prisma.marsRoverData.findFirst({
       where: { jsonData: { equals: marsPhoto } }
@@ -69,21 +68,14 @@ export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
     if (!user) {
       throw new Error("User not found");
     }
-    console.log("unMarkImageAsFavorite -- marsPhoto", marsPhoto);
 
     if (marsPhoto.marsRoverDataId) {
-      console.log("one");
-      console.log("marsPhoto.marsRoverDataID", marsPhoto.marsRoverDataId);
-
       existingMarsData = await prisma.marsRoverData.findFirst({
         where: { id: marsPhoto.marsRoverDataId }
       });
-      console.log("existingMarsData", existingMarsData);
 
       id = existingMarsData?.id;
     } else {
-      console.log("two");
-
       existingMarsData = await prisma.marsRoverData.findFirst({
         where: { jsonData: { equals: marsPhoto } }
       });
@@ -93,7 +85,6 @@ export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
     if (!existingMarsData) {
       throw new Error("Mars Photo not found");
     }
-    console.log("id", id);
 
     const favoriteMarsPhotoToDelete =
       await prisma.favoriteMarsRoverData.findFirst({
@@ -102,7 +93,6 @@ export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
           marsRoverDataId: id
         }
       });
-    console.log("favoriteMarsPhotoToDelete", favoriteMarsPhotoToDelete);
 
     if (!favoriteMarsPhotoToDelete) {
       console.error("Favorite Mars Photo not found for deletion.");
@@ -126,7 +116,6 @@ export async function getExistingMarsPhoto({ email }: User, data: any) {
 
   try {
     if (!email) return null;
-    console.log("getExistingMarsPhoto -- Data", data);
 
     if (data.marsRoverDataId) {
       existingMarsRoverData = await prisma.marsRoverData.findFirst({
@@ -177,7 +166,6 @@ export async function getFavoriteMarsPhotos(userData: User) {
       where: { userId: user.id },
       include: { marsRoverData: true }
     });
-    console.log("favoriteMarsPhotos", favoriteMarsPhotos);
 
     return favoriteMarsPhotos;
   } catch (error) {
