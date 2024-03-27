@@ -2,9 +2,21 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-const SpaceSpinner = () => {
+const SpaceSpinner = ({ classSize }: { classSize: string }) => {
   const [images, setImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const largeClass = {
+    outer: "flex items-center justify-center h-screen",
+    inner: "relative",
+    image: "w-20 h-20"
+  };
+
+  const smallClass = {
+    outer: "items-center justify-center",
+    inner: "relative",
+    image: "w-5 h-5"
+  };
 
   useEffect(() => {
     const importAll = (r: any) => {
@@ -30,12 +42,20 @@ const SpaceSpinner = () => {
   }, [images]);
 
   return (
-    <div className="flex items-center justify-center h-screen ">
-      <div className="relative">
+    <div
+      className={classSize === "large" ? largeClass.outer : smallClass.outer}
+    >
+      <div
+        className={classSize === "large" ? largeClass.inner : smallClass.inner}
+      >
         <Image
           src={images[currentImageIndex]}
           alt="Saturn"
-          className="w-20 h-20 animate-pulse-slow "
+          className={
+            classSize === "large"
+              ? largeClass.image + " animate-pulse-slow"
+              : smallClass.image + " animate-pulse-slow"
+          }
         />
       </div>
     </div>

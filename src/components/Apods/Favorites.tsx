@@ -5,14 +5,15 @@ import { useSession } from "next-auth/react";
 import {
   getExistingApod,
   markImageAsFavorite,
-  unMarkImageAsFavorite,
+  unMarkImageAsFavorite
 } from "@/app/actions/favoriteApod";
 import { Apod, FavoriteApod } from "@/types/Apods/apods";
 import { Session } from "@/types/Users/users";
+import SpaceSpinner from "../Loaders/Spinner";
 
 export default function ApodClient({ data }: any) {
   const { data: session } = useSession();
-
+  const [isLoading, setIsLoading] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [errormsg, setErrormsg] = useState("");
   useEffect(() => {
@@ -30,9 +31,12 @@ export default function ApodClient({ data }: any) {
     setTimeout(() => setErrormsg(""), 5000);
   };
   const handleFavoriteToggle = async (session: Session, apod: Apod) => {
+    setIsLoading(true);
+
     if (!session) {
       setErrormsg("You must log in to favorite an image");
       timeoutErrorMessage();
+      setIsLoading(false);
       return;
     }
     if (!isFavorite) {
@@ -55,6 +59,7 @@ export default function ApodClient({ data }: any) {
       }
       setIsFavorite(false);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -117,6 +122,7 @@ export default function ApodClient({ data }: any) {
             </g>
           </svg>
         )}
+        {isLoading && <SpaceSpinner classSize={"small"} />}
       </button>
     </>
   );
