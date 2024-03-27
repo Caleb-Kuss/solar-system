@@ -23,9 +23,7 @@ export default async function FavoriteApods() {
   const totalPhotos = data.length;
 
   const message =
-    totalPhotos === 1
-      ? "1 Favorite Photo of Mars"
-      : `${totalPhotos} Favorite Photos of Mars`;
+    totalPhotos === 1 ? "1 Photo Found" : `${totalPhotos} Photos Found`;
 
   return (
     <>
@@ -57,9 +55,9 @@ export default async function FavoriteApods() {
                 <Favorites data={marsData} />
               </div>
               <p className="mt-2 text-center">
-                Rover Name: {marsData.marsRoverData.jsonData.rover.name}, Rover
-                ID: {marsData.marsRoverData.jsonData.rover.id}, Rover Camera:{" "}
-                {marsData.marsRoverData.jsonData.camera.full_name}
+                Rover: {marsData.marsRoverData.jsonData.rover.name}, Camera:{" "}
+                {marsData.marsRoverData.jsonData.camera.full_name}, Date:{" "}
+                {marsData.marsRoverData.jsonData.earth_date}
               </p>
             </div>
           ))}

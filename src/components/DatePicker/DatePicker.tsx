@@ -85,7 +85,7 @@ export default function MarsRoverParent() {
           </select>
         </div>
       </div>
-      {loading && <SpaceSpinner />}
+      {loading && <SpaceSpinner classSize={"large"} />}
       {error && (
         <div className="bg-gray-800 text-white p-4 md:p-8 h-screen flex justify-center mb-4">
           <h1 className="text-basemd:text-3xl">{error}</h1>
@@ -102,15 +102,12 @@ export default function MarsRoverParent() {
       )}
       {data.length > 0 && (
         <div className="bg-gray-800 text-white p-4 md:p-8">
-          <h1 className="text-3xl font-bold mb-4 text-center">
-            Mars Rover Images {data.length} images found!
+          <h1 className="text-3xl font-bold mb-5 text-center">
+            {data.length} images found!
           </h1>
           <div className="flex flex-wrap justify-center">
             {data.map((photo: MarsPhoto) => (
               <div key={photo.id} className="mb-4 text-center mx-2">
-                <h2 className="text-xl font-semibold">
-                  Earth date this photo was taken {photo.earth_date}
-                </h2>
                 <div className="w-full max-w-md mx-auto">
                   <Image
                     src={photo.img_src}
@@ -120,9 +117,8 @@ export default function MarsRoverParent() {
                   />
                 </div>
                 <FavoriteRover data={photo} />
-                <p className="mt-2">
-                  Rover Name: {photo.rover.name}, Rover ID: {photo.rover.id},
-                  Rover Camera: {photo.camera.full_name}
+                <p>
+                  Camera: {photo.camera.full_name}, Status: {photo.rover.status}
                 </p>
               </div>
             ))}

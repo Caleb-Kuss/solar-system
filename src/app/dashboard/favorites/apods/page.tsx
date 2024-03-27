@@ -20,9 +20,7 @@ export default async function FavoriteApods() {
   const totalApods = data.length;
 
   const message =
-    totalApods === 1
-      ? "1 Favorite Astronomy Picture of the Day"
-      : `${totalApods} Favorite Astronomy Pictures of the Day`;
+    totalApods === 1 ? "1 APOD Found" : `${totalApods} APODS Found`;
 
   return (
     <>
