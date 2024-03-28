@@ -9,6 +9,7 @@ import ScrollToTopButton from "../Top/Top";
 import { getManifest, MarsRoverData } from "@/app/actions/roverData";
 import FavoriteRover from "../marsRover/FavoriteRover";
 import moment from "moment";
+import RoverDetails from "../Details/Rover";
 
 const today = moment().format();
 
@@ -102,9 +103,12 @@ export default function MarsRoverParent() {
       )}
       {data.length > 0 && (
         <div className="bg-gray-800 text-white p-4 md:p-8">
-          <h1 className="text-3xl font-bold mb-5 text-center">
-            {data.length} images found!
-          </h1>
+          <div className="flex justify-around">
+            <h1 className="text-3xl font-bold mb-5 text-center">
+              {data.length} images found!
+            </h1>
+            <RoverDetails data={data[0]} />
+          </div>
           <div className="flex flex-wrap justify-center">
             {data.map((photo: MarsPhoto) => (
               <div key={photo.id} className="mb-4 text-center mx-2">
