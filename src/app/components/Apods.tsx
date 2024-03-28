@@ -7,10 +7,7 @@ export default async function Apod() {
   );
   const apod = await getApod.json();
 
-  let video;
-  if (apod.url.includes("youtube")) {
-    video = true;
-  }
+  const video = apod.url.includes("youtube") ? true : false;
 
   return (
     <div className="bg-gray-800 text-white p-4 md:p-8 flex flex-col items-center ">
