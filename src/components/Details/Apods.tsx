@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const ApodDetails = ({ apod }: any) => {
   const [open, setOpen] = useState<boolean>(false);
-  const { copyRight, title, explanation } = apod;
+  const { copyRight, title, explanation, datePosted } = apod;
 
   const handleClick = () => {
     setOpen(!open);
@@ -30,6 +30,9 @@ const ApodDetails = ({ apod }: any) => {
               </h1>
               <p className="text-lg md:text-xl text-gray-600 mb-4">
                 {explanation}
+              </p>
+              <p className="text-lg md:text-xl text-gray-600 mb-4">
+                Date: {datePosted}
               </p>
               {copyRight && (
                 <p className="text-lg md:text-xl text-gray-600">

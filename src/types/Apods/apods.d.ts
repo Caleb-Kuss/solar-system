@@ -2,7 +2,7 @@ import { User } from "../Users/users";
 
 export type Apod = {
   copyright: string;
-  date: string;
+  datePosted: string;
   explanation: string;
   hdurl: string;
   media_type: string;
@@ -22,7 +22,7 @@ export type FavoriteApod = {
 export type Apods = [
   apod: {
     copyright: string;
-    date: string;
+    datePosted: string;
     explanation: string;
     hdurl: string;
     media_type: string;
