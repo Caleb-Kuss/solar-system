@@ -4,9 +4,9 @@ import { getFavoriteApods } from "@/app/actions/favoriteApod";
 import Image from "next/image";
 import Favorites from "@/components/Apods/Favorites";
 import Navbar from "@/components/NavBar/NavBar";
-
 import type { Metadata } from "next";
 import ApodDetails from "@/components/Details/Apods";
+import ScrollToTopButton from "@/components/Top/Top";
 
 export const metadata: Metadata = {
   title: "Solar System | Favorite APODs",
@@ -67,6 +67,7 @@ export default async function FavoriteApods() {
             </div>
           ))}
         </div>
+        <ScrollToTopButton />
       </div>
     </>
   );
