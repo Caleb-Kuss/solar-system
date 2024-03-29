@@ -2,7 +2,7 @@ import { User } from "../Users/users";
 
 export type Apod = {
   copyright: string;
-  datePosted: string;
+  date: string;
   explanation: string;
   hdurl: string;
   media_type: string;
