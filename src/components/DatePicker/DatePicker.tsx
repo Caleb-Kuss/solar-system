@@ -10,6 +10,7 @@ import { getManifest, MarsRoverData } from "@/app/actions/roverData";
 import FavoriteRover from "../marsRover/FavoriteRover";
 import moment from "moment";
 import RoverDetails from "../Details/Rover";
+import MarsDetails from "@/components/Details/MarsDetails";
 
 const today = moment().format();
 
@@ -120,10 +121,10 @@ export default function MarsRoverParent() {
                     height={500}
                   />
                 </div>
-                <FavoriteRover data={photo} />
-                <p>
-                  Camera: {photo.camera.full_name}, Status: {photo.rover.status}
-                </p>
+                <div className="flex justify-center mt-2 items-center space-x-10">
+                  <FavoriteRover data={photo} />
+                  <MarsDetails data={photo} />
+                </div>
               </div>
             ))}
           </div>

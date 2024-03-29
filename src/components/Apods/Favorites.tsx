@@ -65,7 +65,7 @@ export default function ApodClient({ data }: any) {
   return (
     <>
       {errormsg && (
-        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 bg-black text-red-500 p-4 rounded-lg shadow-lg z-50">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 bg-black text-red-500 p-4 rounded-lg shadow-lg z-50">
           <span className="mr-2">⚠</span>
           {errormsg}
         </div>
