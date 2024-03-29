@@ -7,6 +7,7 @@ import { getFavoriteMarsPhotos } from "@/app/actions/favoriteRover";
 import ScrollToTopButton from "@/components/Top/Top";
 
 import type { Metadata } from "next";
+import MarsDetails from "@/components/Details/MarsDetails";
 
 export const metadata: Metadata = {
   title: "Solar System | Mars Photos",
@@ -39,9 +40,6 @@ export default async function FavoriteApods() {
               key={marsData.marsRoverData.jsonData.id}
               className="bg-gray-800 text-white p-4 md:p-8 flex flex-col items-center max-w-md mx-2 mb-4"
             >
-              <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                {marsData.marsRoverData.jsonData.title}
-              </h2>
               <div className="mx-auto">
                 <Image
                   className="mt-2 rounded"
@@ -51,14 +49,10 @@ export default async function FavoriteApods() {
                   alt={marsData.marsRoverData.jsonData.camera.full_name}
                 />
               </div>
-              <div className="flex justify-center mt-2">
+              <div className="flex justify-center mt-2 space-x-10">
                 <Favorites data={marsData} />
+                <MarsDetails data={marsData.marsRoverData.jsonData} />
               </div>
-              <p className="mt-2 text-center">
-                Rover: {marsData.marsRoverData.jsonData.rover.name}, Camera:{" "}
-                {marsData.marsRoverData.jsonData.camera.full_name}, Date:{" "}
-                {marsData.marsRoverData.jsonData.earth_date}
-              </p>
             </div>
           ))}
         </div>
