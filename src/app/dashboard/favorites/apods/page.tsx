@@ -6,6 +6,7 @@ import Favorites from "@/components/Apods/Favorites";
 import Navbar from "@/components/NavBar/NavBar";
 
 import type { Metadata } from "next";
+import ApodDetails from "@/components/Details/Apods";
 
 export const metadata: Metadata = {
   title: "Solar System | Favorite APODs",
@@ -20,7 +21,7 @@ export default async function FavoriteApods() {
   const totalApods = data.length;
 
   const message =
-    totalApods === 1 ? "1 APOD Found" : `${totalApods} APODS Found`;
+    totalApods === 1 ? "1 APOD Found" : `${totalApods} APODs Found`;
 
   return (
     <>
@@ -59,15 +60,10 @@ export default async function FavoriteApods() {
                   />
                 )}
               </div>
-              <div className="flex justify-center mt-2">
+              <div className="flex justify-center mt-2 items-center space-x-10">
                 <Favorites data={apod} />
+                <ApodDetails apod={apod.apod} />
               </div>
-              <p className="m-2 text-center">{apod.apod.explanation}</p>
-              {apod.apod.copyRight && (
-                <p className="text-sm text-center">
-                  &copy; {apod.apod.copyRight}
-                </p>
-              )}
             </div>
           ))}
         </div>
