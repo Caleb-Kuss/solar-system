@@ -5,10 +5,10 @@ import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 export const metadata: Metadata = {
-  title: "Solar System | Dashboard",
-  description: "Your space dashboard.",
+  title: "Solar System | Explorer",
+  description: "Your space Explorer."
 };
-export default async function Dashboard() {
+export default async function Explore() {
   const session = await getServerSession(options);
   if (!session) return null;
 
@@ -31,7 +31,7 @@ export default async function Dashboard() {
               <span>Explore Mars</span>
             </button>
           </Link>
-          <Link href="/dashboard/favorites/apods">
+          <Link href="/explore/favorites/apods">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2 max-w-md">
               <Image
                 src="/astronomy.svg"
@@ -42,7 +42,7 @@ export default async function Dashboard() {
               <span>Favorite APODs</span>
             </button>
           </Link>
-          <Link href="/dashboard/favorites/marsPhotos">
+          <Link href="/explore/favorites/marsPhotos">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2 max-w-md h-20">
               <Image src="/mars.png" alt="Mars Rover" width={50} height={50} />
               <span>Favorite Mars Photos</span>

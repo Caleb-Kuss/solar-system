@@ -83,7 +83,7 @@ export default function RoverClient({ data }: any) {
       <button
         onClick={() => handleFavoriteToggle(session as Session, data)}
         disabled={isLoading}
-        className="p-2 text-yellow-500 relative mb-10"
+        className="p-2 text-yellow-500 relative"
       >
         {!isLoading && (
           <>

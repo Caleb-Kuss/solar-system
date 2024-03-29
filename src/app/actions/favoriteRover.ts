@@ -54,7 +54,7 @@ export async function markImageAsFavorite(
     console.error("Error marking image as favorite:", error);
     throw error;
   } finally {
-    revalidatePath("/dashboard/favorites/marsPhotos");
+    revalidatePath("/explore/favorites/marsPhotos");
   }
 }
 export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
@@ -106,7 +106,7 @@ export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
     console.error("Error unmarking image as favorite:", error);
     throw error;
   } finally {
-    revalidatePath("/dashboard/favorites/marsPhotos");
+    revalidatePath("/explore/favorites/marsPhotos");
   }
 }
 
@@ -172,6 +172,6 @@ export async function getFavoriteMarsPhotos(userData: User) {
     console.error("Error getting favorite Apods:", error);
     throw error;
   } finally {
-    revalidatePath("/dashboard/favorites/marsPhotos");
+    revalidatePath("/explore/favorites/marsPhotos");
   }
 }

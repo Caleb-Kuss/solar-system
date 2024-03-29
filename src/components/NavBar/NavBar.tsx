@@ -15,9 +15,9 @@ export default async function Navbar() {
         </li>
         {session && (
           <li>
-            <Link href="/dashboard">
+            <Link href="/explore">
               <span className="cursor-pointer hover:text-gray-300">
-                Dashboard
+                Explore
               </span>
             </Link>
           </li>
