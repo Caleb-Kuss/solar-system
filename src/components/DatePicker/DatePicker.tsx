@@ -11,6 +11,7 @@ import FavoriteRover from "../marsRover/FavoriteRover";
 import moment from "moment";
 import RoverDetails from "../Details/Rover";
 import MarsDetails from "@/components/Details/MarsDetails";
+import usePagination from "@/hooks/usePagination";
 
 const today = moment().format();
 
@@ -21,6 +22,9 @@ export default function MarsRoverParent() {
   const [error, setError] = useState<string | null>(null);
   const [selectedRover, setSelectedRover] = useState<string>("");
   const rovers = ["Curiosity", "Perseverance", "Spirit", "Opportunity"];
+
+  const { pageNumber, pageCount, pageData, nextPage, previousPage } =
+    usePagination(data);
 
   const handleRoverChange = async (rover: string) => {
     try {
@@ -47,6 +51,7 @@ export default function MarsRoverParent() {
           return setError(data.errors);
         }
         if (!data.photos) return;
+
         setData(data.photos);
       } catch (error) {
         setError("Error fetching data");
@@ -104,14 +109,14 @@ export default function MarsRoverParent() {
       )}
       {data.length > 0 && (
         <div className="bg-gray-800 text-white p-4 md:p-8">
-          <div className="flex justify-around">
+          <div className="flex justify-evenly">
             <h1 className="text-3xl font-bold mb-5 text-center">
-              {data.length} images found!
+              {data.length} images!
             </h1>
             <RoverDetails data={data[0]} />
           </div>
           <div className="flex flex-wrap justify-center">
-            {data.map((photo: MarsPhoto) => (
+            {pageData.map((photo: MarsPhoto) => (
               <div key={photo.id} className="mb-4 text-center mx-2">
                 <div className="w-full max-w-md mx-auto">
                   <Image
@@ -128,6 +133,57 @@ export default function MarsRoverParent() {
               </div>
             ))}
           </div>
+          <div className="flex justify-evenly mt-4">
+            <button
+              onClick={previousPage}
+              disabled={pageNumber === 0 ? true : false}
+              className="py-1 px-2 md:py-3 md:px-6"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100"
+                width="40"
+                height="40"
+                transform="rotate(-90)"
+              >
+                <circle cx="50" cy="50" r="50" />
+                <path fill="#FFF" d="m50 30 30 40-30-10-30 10z" />
+                <circle cx="10" cy="20" r="1" fill="#FFF" />
+                <circle cx="90" cy="20" r="1" fill="#FFF" />
+                <circle cx="30" cy="40" r="1" fill="#FFF" />
+                <circle cx="70" cy="40" r="1" fill="#FFF" />
+                <circle cx="50" cy="10" r="1" fill="#FFF" />
+                <circle cx="20" cy="80" r="1" fill="#FFF" />
+                <circle cx="80" cy="80" r="1" fill="#FFF" />
+              </svg>
+            </button>
+            <button
+              onClick={nextPage}
+              disabled={pageNumber === pageCount - 1 ? true : false}
+              className="py-1 px-2 md:py-3 md:px-6"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100"
+                width="40"
+                height="40"
+                transform="scale(1 -1)rotate(90)"
+              >
+                <circle cx="50" cy="50" r="50" />
+                <path fill="#FFF" d="m50 30 30 40-30-10-30 10z" />
+                <circle cx="10" cy="20" r="1" fill="#FFF" />
+                <circle cx="90" cy="20" r="1" fill="#FFF" />
+                <circle cx="30" cy="40" r="1" fill="#FFF" />
+                <circle cx="70" cy="40" r="1" fill="#FFF" />
+                <circle cx="50" cy="10" r="1" fill="#FFF" />
+                <circle cx="20" cy="80" r="1" fill="#FFF" />
+                <circle cx="80" cy="80" r="1" fill="#FFF" />
+              </svg>
+            </button>
+          </div>
+          <p className="flex justify-center mt-5">
+            {pageNumber + 1} of {pageCount}
+          </p>
         </div>
       )}
       <ScrollToTopButton />
