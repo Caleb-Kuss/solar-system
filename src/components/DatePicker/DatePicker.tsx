@@ -23,16 +23,25 @@ export default function MarsRoverParent() {
   const [selectedRover, setSelectedRover] = useState<string>("");
   const rovers = ["Curiosity", "Perseverance", "Spirit", "Opportunity"];
 
-  const { pageNumber, pageCount, pageData, nextPage, previousPage } =
-    usePagination(data);
-
+  const {
+    pageNumber,
+    pageCount,
+    pageData,
+    nextPage,
+    previousPage,
+    resetPageNumber,
+  } = usePagination(data);
   const handleRoverChange = async (rover: string) => {
     try {
+      resetPageNumber();
+      setData([]);
+      setLoading(true);
       const data = await getManifest(rover);
       const lastRecievedPhoto = moment(data.photo_manifest.max_date).format();
 
       setStartDate(lastRecievedPhoto);
       setSelectedRover(rover);
+      setLoading(false);
     } catch (error: unknown) {
       setError(error as string);
     }
@@ -40,9 +49,10 @@ export default function MarsRoverParent() {
 
   useEffect(() => {
     const fetchMarsData = async () => {
-      setLoading(true);
-      setError(null);
       try {
+        resetPageNumber();
+        setLoading(true);
+        setError(null);
         if (selectedRover === "") {
           return setError("Please select a rover to get started");
         }
@@ -70,7 +80,10 @@ export default function MarsRoverParent() {
       <div className="flex flex-col md:flex-row md:items-center justify-center mb-4">
         <DatePicker
           selected={new Date(startDate)}
-          onChange={(date: any) => setStartDate(date)}
+          onChange={(date: any) => {
+            setStartDate(date);
+            setData([]);
+          }}
           className="datepicker border rounded-md shadow-sm w-full md:w-auto mb-2 md:mb-0"
           wrapperClassName="flex justify-center"
           customInput={
@@ -98,7 +111,7 @@ export default function MarsRoverParent() {
           <h1 className="text-basemd:text-3xl">{error}</h1>
         </div>
       )}
-      {!data.length && !error && (
+      {!data.length && !error && !loading && (
         <div className="bg-gray-800 text-white p-4 md:p-8 h-screen flex flex-col justify-center ">
           <div>
             <h1 className="text-base md:text-3xl font-bold mb-4 text-center">

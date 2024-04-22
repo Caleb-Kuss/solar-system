@@ -9,13 +9,13 @@ const SpaceSpinner = ({ classSize }: { classSize: string }) => {
   const largeClass = {
     outer: "flex items-center justify-center h-screen",
     inner: "relative",
-    image: "w-20 h-20"
+    image: "w-20 h-20",
   };
 
   const smallClass = {
     outer: "items-center justify-center",
     inner: "relative",
-    image: "w-5 h-5"
+    image: "w-5 h-5",
   };
 
   useEffect(() => {
