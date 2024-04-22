@@ -106,7 +106,7 @@ export default function MarsRoverParent() {
         </div>
       </div>
       {loading && <SpaceSpinner classSize={"large"} />}
-      {error && (
+      {error && !loading && (
         <div className="bg-gray-800 text-white p-4 md:p-8 h-screen flex justify-center mb-4">
           <h1 className="text-basemd:text-3xl">{error}</h1>
         </div>
