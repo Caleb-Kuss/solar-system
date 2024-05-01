@@ -53,9 +53,10 @@ export async function markImageAsFavorite(
   } catch (error) {
     console.error("Error marking image as favorite:", error);
     throw error;
-  } finally {
-    revalidatePath("/explore/favorites/marsPhotos");
   }
+  // finally {
+  //   revalidatePath("/explore/favorites/marsPhotos");
+  // }
 }
 export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
   let existingMarsData;
