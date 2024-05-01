@@ -24,17 +24,17 @@ export default function MarsRoverParent() {
   const rovers = ["Curiosity", "Perseverance"];
   // Removed "Spirit" and "Opportunity" from the rovers array as they stopped sending images.
   //, "Spirit", "Opportunity"
-  // const {
-  //   pageNumber,
-  //   pageCount,
-  //   pageData,
-  //   nextPage,
-  //   previousPage,
-  //   resetPageNumber
-  // } = usePagination(data);
+  const {
+    pageNumber,
+    pageCount,
+    pageData,
+    nextPage,
+    previousPage,
+    resetPageNumber
+  } = usePagination(data);
   const handleRoverChange = async (rover: string) => {
     try {
-      // resetPageNumber();
+      resetPageNumber();
       setData([]);
       setLoading(true);
       const data = await getManifest(rover);
@@ -51,7 +51,7 @@ export default function MarsRoverParent() {
   useEffect(() => {
     const fetchMarsData = async () => {
       try {
-        // resetPageNumber();
+        resetPageNumber();
         setLoading(true);
         setError(null);
         if (selectedRover === "") {
@@ -130,7 +130,7 @@ export default function MarsRoverParent() {
             <RoverDetails data={data[0]} />
           </div>
           <div className="flex flex-wrap justify-center">
-            {data.map((photo: MarsPhoto) => (
+            {pageData.map((photo: MarsPhoto) => (
               <div key={photo.id} className="mb-4 text-center mx-2">
                 <div className="w-full max-w-md mx-auto">
                   <Image
@@ -147,7 +147,7 @@ export default function MarsRoverParent() {
               </div>
             ))}
           </div>
-          {/* <div className="flex justify-evenly mt-4">
+          <div className="flex justify-evenly mt-4">
             <button
               onClick={previousPage}
               disabled={pageNumber === 0 ? true : false}
@@ -197,7 +197,7 @@ export default function MarsRoverParent() {
           </div>
           <p className="flex justify-center mt-5">
             {pageNumber + 1} of {pageCount}
-          </p> */}
+          </p>
         </div>
       )}
       <ScrollToTopButton />
