@@ -49,7 +49,7 @@ const SpaceSpinner = ({ classSize }: { classSize: string }) => {
         className={classSize === "large" ? largeClass.inner : smallClass.inner}
       >
         <Image
-          src={images[currentImageIndex]}
+          src={images ? images[currentImageIndex] : "loading"}
           alt="Saturn"
           width={20}
           height={20}
