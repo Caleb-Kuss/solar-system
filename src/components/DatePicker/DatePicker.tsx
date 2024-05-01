@@ -21,15 +21,16 @@ export default function MarsRoverParent() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedRover, setSelectedRover] = useState<string>("");
-  const rovers = ["Curiosity", "Perseverance", "Spirit", "Opportunity"];
-
+  const rovers = ["Curiosity", "Perseverance"];
+  // Removed "Spirit" and "Opportunity" from the rovers array as they stopped sending images.
+  //, "Spirit", "Opportunity"
   const {
     pageNumber,
     pageCount,
     pageData,
     nextPage,
     previousPage,
-    resetPageNumber,
+    resetPageNumber
   } = usePagination(data);
   const handleRoverChange = async (rover: string) => {
     try {
