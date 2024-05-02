@@ -106,9 +106,10 @@ export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
   } catch (error) {
     console.error("Error unmarking image as favorite:", error);
     throw error;
-  } finally {
-    revalidatePath("/explore/favorites/marsPhotos");
   }
+  // finally {
+  //   revalidatePath("/explore/favorites/marsPhotos");
+  // }
 }
 
 export async function getExistingMarsPhoto({ email }: User, data: any) {
@@ -172,7 +173,8 @@ export async function getFavoriteMarsPhotos(userData: User) {
   } catch (error) {
     console.error("Error getting favorite Apods:", error);
     throw error;
-  } finally {
-    revalidatePath("/explore/favorites/marsPhotos");
   }
+  // finally {
+  //   revalidatePath("/explore/favorites/marsPhotos");
+  // }
 }
