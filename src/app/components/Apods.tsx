@@ -3,7 +3,7 @@ import Favorites from "../../components/Apods/Favorites";
 
 export default async function Apod() {
   const getApod = await fetch(
-    `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`
+    `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`,
   );
   const apod = await getApod.json();
 
@@ -12,7 +12,7 @@ export default async function Apod() {
   return (
     <div className="bg-gray-800 text-white p-4 md:p-8 flex flex-col items-center ">
       <h1 className="text-base md:text-3xl font-bold mb-4">
-        Astronomy Picture of the Day
+        Astronomy {video ? "Video" : "Picture"} of the Day
       </h1>
       <div className="mb-4 w-full md:w-auto">
         <div className="mx-auto w-full" style={{ maxWidth: "500px" }}>
