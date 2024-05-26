@@ -7,7 +7,7 @@ export default async function Apod() {
   );
   const apod = await getApod.json();
 
-  const video = apod.url.includes("youtube") ? true : false;
+  const video = apod.url.media_type === "video" ? true : false;
 
   return (
     <div className="bg-gray-800 text-white p-4 md:p-8 flex flex-col items-center ">

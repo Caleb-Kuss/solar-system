@@ -31,6 +31,12 @@ export default async function Explore() {
               <span>Explore Mars</span>
             </button>
           </Link>
+          <Link href="/apods">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2 max-w-md">
+              <Image src="/constellation.svg" alt="A Constellation" width={61} height={61} />
+              <span>Explore APODs</span>
+            </button>
+          </Link>
           <Link href="/explore/favorites/apods">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2 max-w-md">
               <Image
