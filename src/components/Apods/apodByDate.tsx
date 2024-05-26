@@ -8,6 +8,9 @@ import ScrollToTopButton from "../../components/Top/Top";
 import moment from "moment";
 import getApodByDate from "@/app/actions/apodData";
 import { Apod } from "@/types/Apods/apods";
+import Favorites from "./Favorites";
+import ApodDetails from "../Details/Apods";
+
 const today = moment().format();
 
 export default function ApodSelection() {
@@ -101,7 +104,10 @@ export default function ApodSelection() {
               <h1 className="text-xl md:text-3xl font-bold text-center text-gray-600 mb-4 mt-4">
                 {data.title}
               </h1>
-
+              <div className="flex justify-center mt-2 items-center space-x-10 mb-4">
+                <Favorites data={data} />
+                <ApodDetails apod={data} />
+              </div>
               <p className="text-lg md:text-xl text-gray-600 mb-4">
                 {data.explanation}
               </p>
