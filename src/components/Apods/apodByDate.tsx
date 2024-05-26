@@ -7,11 +7,12 @@ import SpaceSpinner from "../../components/Loaders/Spinner";
 import ScrollToTopButton from "../../components/Top/Top";
 import moment from "moment";
 import getApodByDate from "@/app/actions/apodData";
+import { Apod } from "@/types/Apods/apods";
 const today = moment().format();
 
 export default function ApodSelection() {
   const [startDate, setStartDate] = useState(today);
-  const [data, setData] = useState();
+  const [data, setData] = useState<Apod>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,7 +24,6 @@ export default function ApodSelection() {
         setLoading(true);
         setError(null);
         const data = await getApodByDate(startDate);
-        console.log(data);
         if (data.errors) {
           return setError(data.errors);
         }
@@ -49,7 +49,7 @@ export default function ApodSelection() {
             selected={new Date(startDate)}
             onChange={(date: any) => {
               setStartDate(date);
-              setData(null);
+              setData(undefined);
             }}
             className="datepicker border rounded-md shadow-sm w-full md:w-auto mb-2 md:mb-0"
             wrapperClassName="flex justify-center"

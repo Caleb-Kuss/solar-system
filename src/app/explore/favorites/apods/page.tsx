@@ -41,7 +41,7 @@ export default async function FavoriteApods() {
                 {apod.apod.title}
               </h2>
               <div className="mx-auto w-full max-w-md">
-                {apod.apod.media_type === "video" ? (
+                {apod.apod.url.includes("youtube") ? (
                   <iframe
                     src={apod.apod.url}
                     title={apod.apod.title}
