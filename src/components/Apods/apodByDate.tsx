@@ -101,21 +101,20 @@ export default function ApodSelection() {
 
               </div>
 
-              <h1 className="text-xl md:text-3xl font-bold text-center text-gray-600 mb-4 mt-4">
+              <h1 className="text-xl md:text-3xl font-bold text-center  mb-4 mt-4">
                 {data.title}
               </h1>
               <div className="flex justify-center mt-2 items-center space-x-10 mb-4">
                 <Favorites data={data} />
-                <ApodDetails apod={data} />
               </div>
-              <p className="text-lg md:text-xl text-gray-600 mb-4">
+              <p className="text-lg md:text-xl  mb-4">
                 {data.explanation}
               </p>
-              <p className="text-lg md:text-xl text-gray-600 mb-4">
+              <p className="text-lg md:text-xl  mb-4">
                 Date: {data.date}
               </p>
               {data.copyright && (
-                <p className="text-lg md:text-xl text-gray-600">
+                <p className="text-lg md:text-xl ">
                   &copy; {data.copyright}
                 </p>
               )}
