@@ -167,6 +167,7 @@ export async function getFavoriteMarsPhotos(userData: User) {
     const favoriteMarsPhotos = await prisma.favoriteMarsRoverData.findMany({
       where: { userId: user.id },
       include: { marsRoverData: true },
+      orderBy: { marsRoverData: { createdAt: "desc" } },
     });
 
     return favoriteMarsPhotos;
