@@ -26,31 +26,34 @@ export default async function Explore() {
         </h1>
         <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Link href="/marsRover">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2 max-w-md">
-              <Image src="/rover.svg" alt="Mars Rover" width={50} height={50} />
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2">
+              <div className="w-12 h-12 flex-shrink-0">
+                <Image src="/rover.svg" alt="Mars Rover" width={48} height={48} className="object-contain" />
+              </div>
               <span>Explore Mars</span>
             </button>
           </Link>
           <Link href="/apods">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2 max-w-md">
-              <Image src="/constellation.svg" alt="A Constellation" width={61} height={61} />
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2">
+              <div className="w-12 h-12 flex-shrink-0">
+                <Image src="/constellation.svg" alt="A Constellation" width={48} height={48} className="object-contain" />
+              </div>
               <span>Explore APODs</span>
             </button>
           </Link>
           <Link href="/explore/favorites/apods">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2 max-w-md">
-              <Image
-                src="/astronomy.svg"
-                alt="Mars Rover"
-                width={50}
-                height={50}
-              />
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2">
+              <div className="w-12 h-12 flex-shrink-0">
+                <Image src="/astronomy.svg" alt="Astronomy" width={48} height={48} className="object-contain" />
+              </div>
               <span>Favorite APODs</span>
             </button>
           </Link>
           <Link href="/explore/favorites/marsPhotos">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2 max-w-md h-20">
-              <Image src="/mars.png" alt="Mars Rover" width={50} height={50} />
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2">
+              <div className="w-12 h-12 flex-shrink-0">
+                <Image src="/mars.png" alt="Mars Rover" width={48} height={48} className="object-contain" />
+              </div>
               <span>Favorite Mars Photos</span>
             </button>
           </Link>

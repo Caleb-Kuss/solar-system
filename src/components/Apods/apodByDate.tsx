@@ -9,7 +9,6 @@ import moment from "moment";
 import getApodByDate from "@/app/actions/apodData";
 import { Apod } from "@/types/Apods/apods";
 import Favorites from "./Favorites";
-import ApodDetails from "../Details/Apods";
 
 const today = moment().format();
 
@@ -27,7 +26,7 @@ export default function ApodSelection() {
         setLoading(true);
         setError(null);
         const data = await getApodByDate(startDate);
-        if (data.errors) {
+        if (data.errors || data.code === 404) {
           return setError(data.errors);
         }
         if (!data) return;
