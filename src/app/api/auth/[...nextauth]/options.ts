@@ -4,6 +4,7 @@ import GitHubProvider from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 import {
   getOrCreateUser,
+  getUser,
   getUserByUsername,
   loginUser,
 } from "@/lib/users/users";
@@ -94,11 +95,14 @@ export const options: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: any) {
+    async jwt({ token, user, account, profile }: any) {
       if (user) {
         token.role = user.role;
+        if (account?.provider === "github") {
+          const gitUser = await getUser(profile?.email || "");
+          token.role = gitUser?.role;
+        }
       }
-
       return token;
     },
     async session({ session, token }: any) {

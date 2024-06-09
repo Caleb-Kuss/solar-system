@@ -50,7 +50,6 @@ export default function RoverClient({ data }: any) {
     marsPhoto: MarsPhoto
   ) => {
     setIsLoading(true);
-    console.log(session)
     if (!session) {
       setIsFavorite(true);
       setErrormsg("You must log in to favorite an image");
