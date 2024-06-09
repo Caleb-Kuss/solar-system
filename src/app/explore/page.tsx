@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 };
 export default async function Explore() {
   const session: Session = await getServerSession(options);
+  console.log(session);
   if (!session) return null;
 
   const userName = session.user?.name;
