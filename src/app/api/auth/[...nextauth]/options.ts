@@ -19,6 +19,7 @@ type User = {
   name: string;
   email: string;
   password: string;
+  role: "USER" | "ADMIN";
 };
 
 export const options: NextAuthOptions = {
@@ -49,7 +50,7 @@ export const options: NextAuthOptions = {
       async authorize(
         credentials:
           | Record<"email" | "username" | "password", string>
-          | undefined
+          | undefined,
       ): Promise<User | null> {
         try {
           const validatedCredentials = credentialsSchema.safeParse(credentials);
@@ -65,13 +66,13 @@ export const options: NextAuthOptions = {
             user = await getOrCreateUser(
               credentials?.password ?? "",
               credentials?.username ?? "",
-              credentials?.email ?? ""
+              credentials?.email ?? "",
             );
           }
 
           const loginSuccessful = await loginUser(
             credentials?.username ?? "",
-            credentials?.password ?? ""
+            credentials?.password ?? "",
           );
 
           if (!loginSuccessful) {
@@ -83,6 +84,7 @@ export const options: NextAuthOptions = {
             password: user.password,
             name: user.userName,
             id: user.id.toString(),
+            role: user.role,
           };
         } catch (error) {
           console.error("Error in authorize function:", error);
@@ -91,4 +93,23 @@ export const options: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }: any) {
+      if (user) {
+        token.role = user.role;
+      }
+
+      return token;
+    },
+    async session({ session, token }: any) {
+      if (token && token.role) {
+        session.user.role = token.role;
+      }
+
+      return session;
+    },
+  },
+  session: {
+    strategy: "jwt",
+  },
 };

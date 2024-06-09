@@ -22,6 +22,14 @@ export default function RoverClient({ data }: any) {
       session: Session,
       marsPhoto: FavoriteMarsPhoto
     ) => {
+
+      if (!session) {
+        setErrormsg("You must log in to favorite an image");
+        timeoutErrorMessage();
+        setIsLoading(false);
+        return;
+      }
+
       const existingFavorite = await getExistingMarsPhoto(
         session?.user,
         marsPhoto

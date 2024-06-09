@@ -18,6 +18,14 @@ export default function ApodClient({ data }: any) {
   const [errormsg, setErrormsg] = useState("");
   useEffect(() => {
     const checkIfFavorite = async (session: Session, apod: FavoriteApod) => {
+
+      if (!session) {
+        setErrormsg("You must log in to favorite an image");
+        timeoutErrorMessage();
+        setIsLoading(false);
+        return;
+      }
+
       const existingFavorite = await getExistingApod(session?.user, apod);
 
       if (existingFavorite) {
@@ -39,6 +47,7 @@ export default function ApodClient({ data }: any) {
       setIsLoading(false);
       return;
     }
+
     if (!isFavorite) {
       setIsFavorite(true);
       const data = await markImageAsFavorite(session.user, apod);
