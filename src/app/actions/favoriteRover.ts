@@ -3,14 +3,21 @@
 import { MarsPhoto } from "@/types/MarsRover/marsRover";
 import { User } from "@/types/Users/users";
 import { PrismaClient } from "@prisma/client";
-import { revalidatePath } from "next/cache";
-
+import { getServerSession } from "next-auth/next";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Session } from "@/types/Users/users";
 const prisma = new PrismaClient();
 
 export async function markImageAsFavorite(
   userData: User,
   marsPhoto: MarsPhoto,
 ) {
+  const session: Session = await getServerSession(options);
+
+  if (!session) {
+    throw new Error("Unauthorized access: User does not have access.");
+  }
+
   try {
     const user = await prisma.user.findUnique({
       where: { email: userData.email },
@@ -54,11 +61,15 @@ export async function markImageAsFavorite(
     console.error("Error marking image as favorite:", error);
     throw error;
   }
-  // finally {
-  //   revalidatePath("/explore/favorites/marsPhotos");
-  // }
 }
+
 export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
+  const session: Session = await getServerSession(options);
+
+  if (!session) {
+    throw new Error("Unauthorized: User does not have access.");
+  }
+
   let existingMarsData;
   let id;
   try {
@@ -107,12 +118,15 @@ export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
     console.error("Error unmarking image as favorite:", error);
     throw error;
   }
-  // finally {
-  //   revalidatePath("/explore/favorites/marsPhotos");
-  // }
 }
 
 export async function getExistingMarsPhoto({ email }: User, data: any) {
+  const session: Session = await getServerSession(options);
+
+  if (!session) {
+    throw new Error("Unauthorized: User does not have access.");
+  }
+
   let existingMarsRoverData;
   let id;
 
@@ -155,6 +169,12 @@ export async function getExistingMarsPhoto({ email }: User, data: any) {
 }
 
 export async function getFavoriteMarsPhotos(userData: User) {
+  const session: Session = await getServerSession(options);
+
+  if (!session) {
+    throw new Error("Unauthorized: User does not have access.");
+  }
+
   try {
     const user = await prisma.user.findUnique({
       where: { email: userData.email },
@@ -175,7 +195,4 @@ export async function getFavoriteMarsPhotos(userData: User) {
     console.error("Error getting favorite Apods:", error);
     throw error;
   }
-  // finally {
-  //   revalidatePath("/explore/favorites/marsPhotos");
-  // }
 }

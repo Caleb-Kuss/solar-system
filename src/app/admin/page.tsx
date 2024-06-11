@@ -4,7 +4,12 @@ import { getServerSession } from "next-auth/next"
 import { options } from "../api/auth/[...nextauth]/options";
 import { Session } from "@/types/Users/users";
 import Navbar from "@/components/NavBar/NavBar";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Solar System | Admin Dashboard",
+  description: "Discover stats about your favorite photos.",
+};
 
 
 export default async function AdminPage() {

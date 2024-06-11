@@ -1,12 +1,21 @@
 "use server";
 
-import { Apod, FavoriteApod } from "@/types/Apods/apods";
+import { Apod } from "@/types/Apods/apods";
 import { User } from "@/types/Users/users";
 import { PrismaClient } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { getServerSession } from "next-auth/next";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Session } from "@/types/Users/users";
+
 const prisma = new PrismaClient();
 
 export async function markImageAsFavorite(userData: User, apod: Apod) {
+  const session: Session = await getServerSession(options);
+
+  if (!session) {
+    throw new Error("Unauthorized access: User does not have access.");
+  }
+
   try {
     const user = await prisma.user.findUnique({
       where: { email: userData.email },
@@ -55,11 +64,15 @@ export async function markImageAsFavorite(userData: User, apod: Apod) {
     console.error("Error marking image as favorite:", error);
     throw error;
   }
-  // finally {
-  //   revalidatePath("/explore/favorites/apods");
-  // }
 }
+
 export async function unMarkImageAsFavorite(userData: User, apod: any) {
+  const session: Session = await getServerSession(options);
+
+  if (!session) {
+    throw new Error("Unauthorized: User does not have access.");
+  }
+
   let existingApod;
 
   try {
@@ -104,12 +117,15 @@ export async function unMarkImageAsFavorite(userData: User, apod: any) {
     console.error("Error unmarking image as favorite:", error);
     throw error;
   }
-  //  finally {
-  //   revalidatePath("/explore/favorites/apods");
-  // }
 }
 
 export async function getExistingApod({ email }: User, data: any) {
+  const session: Session = await getServerSession(options);
+
+  if (!session) {
+    throw new Error("Unauthorized: User does not have access.");
+  }
+
   let existingApod;
   let id;
   try {
@@ -151,6 +167,12 @@ export async function getExistingApod({ email }: User, data: any) {
 }
 
 export async function getFavoriteApods(userData: User) {
+  const session: Session = await getServerSession(options);
+
+  if (!session) {
+    throw new Error("Unauthorized: User does not have access.");
+  }
+
   try {
     const user = await prisma.user.findUnique({
       where: { email: userData.email },
@@ -171,7 +193,4 @@ export async function getFavoriteApods(userData: User) {
     console.error("Error getting favorite Apods:", error);
     throw error;
   }
-  // finally {
-  //   revalidatePath("/explore/favorites/apods");
-  // }
 }
