@@ -33,7 +33,7 @@ export default function ApodSelection() {
 
         setData(data);
       } catch (error) {
-        setError("Error fetching data");
+        setError("We are having trouble getting the APOD, Please check back later");
       } finally {
         setLoading(false);
       }
