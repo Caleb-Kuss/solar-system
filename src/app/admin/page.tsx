@@ -28,6 +28,15 @@ export default async function AdminPage() {
   const roverLikes = await DailyRoverLikes()
   const roverLikesThisWeek = await WeeklyRoverLikes()
   const lastWeekRoverLikes = await LastWeekRoverLikes()
+
+
+  const StatCard = ({ title, value }: { title: string; value: number }) => (
+    <div className="flex flex-col items-center justify-center mb-4">
+      <h3 className="text-l font-bold mb-2">{title}</h3>
+      <p className="text-xl">{value}</p>
+    </div>
+  );
+
   return (
     <>
       <Navbar />
@@ -35,44 +44,27 @@ export default async function AdminPage() {
         <h4 className="flex justify-center mb-10 text-base md:text-3xl">
           Admin Dashboard for {session?.user?.name}
         </h4>
-        <h1 className="flex justify-center text-xl font-bold mb-4">APOD Stats</h1>
-        <div className="flex flex-col  md:items-center justify-center mb-4">
-          <div className="flex flex-col items-center justify-center mb-4">
-            <h3 className="text-l font-bold mb-2">Total Favorite Apods</h3>
-            <p className="text-2xl">{totalApods}</p>
+        <div className="flex flex-row justify-center mb-8 space-x-4 md:space-x-4">
+          <h1 className="text-xl font-bold mr-8">APOD Stats</h1>
+          <h1 className="text-xl font-bold ml-8">Rover Stats</h1>
+        </div>
+        <div className="flex flex-row justify-center space-x-16">
+          <div className="flex flex-col md:items-center space-y-8">
+            <StatCard title="Total Favorite" value={totalApods} />
+            <StatCard title="Today" value={apodLikes} />
+            <StatCard title="This Week" value={apodLikesThisWeek} />
+            <StatCard title="Last Week" value={apodLikesLastWeek} />
           </div>
-          <div className="flex flex-col items-center justify-center mb-4">
-            <h3 className="text-l font-bold mb-2">Total Favorite Apod Likes Today</h3>
-            <p className="text-2xl">{apodLikes}</p>
+          <div className="flex flex-col md:items-center space-y-8">
+            <StatCard title="Total Favorite" value={totalRoverImages} />
+            <StatCard title="Today" value={roverLikes} />
+            <StatCard title="This Week" value={roverLikesThisWeek} />
+            <StatCard title="Last Week" value={lastWeekRoverLikes} />
           </div>
-          <div className="flex flex-col items-center justify-center mb-4">
-            <h3 className="text-l font-bold mb-2">Total Favorite Apod Likes This Week</h3>
-            <p className="text-2xl">{apodLikesThisWeek}</p>
-          </div>
-          <div className="flex flex-col items-center justify-center mb-4">
-            <h3 className="text-l font-bold mb-2">Total Favorite Apod Likes Last Week</h3>
-            <p className="text-2xl">{apodLikesLastWeek}</p>
-          </div>
-          <h1 className="flex justify-center text-xl font-bold mb-4">Rover Stats</h1>
-          <div className="flex flex-col items-center justify-center mb-4">
-            <h3 className="text-l font-bold mb-2">Total Favorite Rover Images</h3>
-            <p className="text-2xl">{totalRoverImages}</p>
-          </div>
-          <div className="flex flex-col items-center justify-center mb-4">
-            <h3 className="text-l font-bold mb-2">Total Favorite Rover Likes Today</h3>
-            <p className="text-2xl">{roverLikes}</p>
-          </div>
-          <div className="flex flex-col items-center justify-center mb-4">
-            <h3 className="text-l font-bold mb-2">Total Favorite Rover Likes This Week</h3>
-            <p className="text-2xl">{roverLikesThisWeek}</p>
-          </div>
-          <div className="flex flex-col items-center justify-center mb-4">
-            <h3 className="text-l font-bold mb-2">Total Favorite Rover Likes Last Week</h3>
-            <p className="text-2xl">{lastWeekRoverLikes}</p>
-          </div>
-
         </div>
       </div>
     </>
+
+
   );
 }
