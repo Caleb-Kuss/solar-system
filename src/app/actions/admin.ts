@@ -188,7 +188,7 @@ export async function DailyRoverLikes() {
       },
     },
   });
-  console.log(favoriteRoverImagesCount);
+
   return reducer(0, favoriteRoverImagesCount, false);
 }
 
