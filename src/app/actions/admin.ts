@@ -7,11 +7,19 @@ import { Session } from "@/types/Users/users";
 import moment from "moment";
 const prisma = new PrismaClient();
 
-const reducer = (count: number, data: any, isApod: boolean) => {
+const reducer = (data: any, isApod: boolean) => {
   if (isApod) {
-    return count + data[0]?.apod?.likes || 0;
+    const total = data.reduce((total: any, apod: any) => {
+      return total + apod?.apod?.likes || 0;
+    }, 0);
+    return total;
   }
-  return count + data[0]?.marsRoverData?.likes || 0;
+
+  const total = data.reduce((total: any, marsRoverData: any) => {
+    return total + marsRoverData?.marsRoverData?.likes || 0;
+  }, 0);
+
+  return total;
 };
 
 export async function totalFavoriteApods() {
@@ -83,7 +91,7 @@ export async function DailyApodLikes() {
     },
   });
 
-  return reducer(0, favoriteApods, true);
+  return reducer(favoriteApods, true);
 }
 
 export async function WeeklyApodLikes() {
@@ -118,7 +126,7 @@ export async function WeeklyApodLikes() {
     },
   });
 
-  return reducer(0, favoriteApodsCount, true);
+  return reducer(favoriteApodsCount, true);
 }
 
 export async function LastWeekApodLikes() {
@@ -153,7 +161,7 @@ export async function LastWeekApodLikes() {
     },
   });
 
-  return reducer(0, favoriteApodsCount, true);
+  return reducer(favoriteApodsCount, true);
 }
 
 export async function DailyRoverLikes() {
@@ -189,7 +197,7 @@ export async function DailyRoverLikes() {
     },
   });
 
-  return reducer(0, favoriteRoverImagesCount, false);
+  return reducer(favoriteRoverImagesCount, false);
 }
 
 export async function WeeklyRoverLikes() {
@@ -217,7 +225,7 @@ export async function WeeklyRoverLikes() {
     select: { marsRoverData: { select: { likes: true } } },
   });
 
-  return reducer(0, favoriteRoverImagesCount, false);
+  return reducer(favoriteRoverImagesCount, false);
 }
 
 export async function LastWeekRoverLikes() {
@@ -250,5 +258,5 @@ export async function LastWeekRoverLikes() {
     },
   });
 
-  return reducer(0, favoriteRoverImagesCount, false);
+  return reducer(favoriteRoverImagesCount, false);
 }
