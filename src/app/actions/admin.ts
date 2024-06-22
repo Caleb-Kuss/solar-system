@@ -7,6 +7,13 @@ import { Session } from "@/types/Users/users";
 import moment from "moment";
 const prisma = new PrismaClient();
 
+const reducer = (count: number, data: any, isApod: boolean) => {
+  if (isApod) {
+    return count + data[0]?.apod?.likes || 0;
+  }
+  return count + data[0]?.marsRoverData?.likes || 0;
+};
+
 export async function totalFavoriteApods() {
   const session: Session = await getServerSession(options);
 
@@ -53,19 +60,30 @@ export async function DailyApodLikes() {
   }
   const today = moment().startOf("day").toDate();
   const tomorrow = moment(today).add(1, "day").toDate();
+  const yesterday = moment(today).subtract(1, "day").toDate();
 
-  const favoriteApodsCount = await prisma.favoriteApod.count({
+  const favoriteApods = await prisma.favoriteApod.findMany({
     where: {
       apod: {
         createdAt: {
-          gte: today,
-          lt: tomorrow,
+          gt: yesterday,
+          lte: tomorrow,
+        },
+        likes: {
+          gt: 0,
+        },
+      },
+    },
+    select: {
+      apod: {
+        select: {
+          likes: true,
         },
       },
     },
   });
 
-  return favoriteApodsCount;
+  return reducer(0, favoriteApods, true);
 }
 
 export async function WeeklyApodLikes() {
@@ -79,19 +97,30 @@ export async function WeeklyApodLikes() {
   const startOfThisWeek = moment().startOf("isoWeek");
   const startOfNextWeek = startOfThisWeek.clone().add(1, "week");
 
-  const favoriteApodsCount = await prisma.favoriteApod.count({
+  const favoriteApodsCount = await prisma.favoriteApod.findMany({
     where: {
       apod: {
         createdAt: {
           gte: startOfThisWeek.toDate(),
           lt: startOfNextWeek.toDate(),
         },
+        likes: {
+          gt: 0,
+        },
+      },
+    },
+    select: {
+      apod: {
+        select: {
+          likes: true,
+        },
       },
     },
   });
 
-  return favoriteApodsCount;
+  return reducer(0, favoriteApodsCount, true);
 }
+
 export async function LastWeekApodLikes() {
   const session: Session = await getServerSession(options);
 
@@ -103,20 +132,30 @@ export async function LastWeekApodLikes() {
   const startOfThisWeek = moment().startOf("isoWeek");
   const startOfLastWeek = startOfThisWeek.clone().subtract(1, "week");
 
-  const favoriteApodsCount = await prisma.favoriteApod.count({
+  const favoriteApodsCount = await prisma.favoriteApod.findMany({
     where: {
       apod: {
         createdAt: {
           gte: startOfLastWeek.toDate(),
           lt: startOfThisWeek.toDate(),
         },
+        likes: {
+          gt: 0,
+        },
+      },
+    },
+    select: {
+      apod: {
+        select: {
+          likes: true,
+        },
       },
     },
   });
 
-  return favoriteApodsCount;
+  return reducer(0, favoriteApodsCount, true);
 }
-// This only counts new records
+
 export async function DailyRoverLikes() {
   const session: Session = await getServerSession(options);
 
@@ -127,18 +166,30 @@ export async function DailyRoverLikes() {
   }
   const today = moment().startOf("day").toDate();
   const tomorrow = moment(today).add(1, "day").toDate();
-  const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.count({
+  const yesterday = moment(today).subtract(1, "day").toDate();
+
+  const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.findMany({
     where: {
       marsRoverData: {
         createdAt: {
-          gte: today,
+          gt: yesterday,
           lt: tomorrow,
+        },
+        likes: {
+          gt: 0,
+        },
+      },
+    },
+    select: {
+      marsRoverData: {
+        select: {
+          likes: true,
         },
       },
     },
   });
-
-  return favoriteRoverImagesCount;
+  console.log(favoriteRoverImagesCount);
+  return reducer(0, favoriteRoverImagesCount, false);
 }
 
 export async function WeeklyRoverLikes() {
@@ -151,18 +202,22 @@ export async function WeeklyRoverLikes() {
   }
   const startOfThisWeek = moment().startOf("isoWeek");
   const startOfNextWeek = startOfThisWeek.clone().add(1, "week");
-  const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.count({
+  const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.findMany({
     where: {
       marsRoverData: {
         createdAt: {
           gte: startOfThisWeek.toDate(),
           lt: startOfNextWeek.toDate(),
         },
+        likes: {
+          gt: 0,
+        },
       },
     },
+    select: { marsRoverData: { select: { likes: true } } },
   });
 
-  return favoriteRoverImagesCount;
+  return reducer(0, favoriteRoverImagesCount, false);
 }
 
 export async function LastWeekRoverLikes() {
@@ -176,16 +231,24 @@ export async function LastWeekRoverLikes() {
   const startOfThisWeek = moment().startOf("isoWeek");
   const startOfLastWeek = startOfThisWeek.clone().subtract(1, "week");
 
-  const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.count({
+  const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.findMany({
     where: {
       marsRoverData: {
         createdAt: {
           gte: startOfLastWeek.toDate(),
           lt: startOfThisWeek.toDate(),
         },
+        likes: { gt: 0 },
+      },
+    },
+    select: {
+      marsRoverData: {
+        select: {
+          likes: true,
+        },
       },
     },
   });
 
-  return favoriteRoverImagesCount;
+  return reducer(0, favoriteRoverImagesCount, false);
 }

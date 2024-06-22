@@ -58,14 +58,7 @@ export default function ApodClient({ data }: any) {
         timeoutErrorMessage();
       }
     } else {
-      const data = await unMarkImageAsFavorite(session.user, apod);
-
-      if (!data) {
-        setErrormsg(
-          "There was an issue with removing this image as a favorite, please try again"
-        );
-        timeoutErrorMessage();
-      }
+      await unMarkImageAsFavorite(session.user, apod);
       setIsFavorite(false);
     }
     setIsLoading(false);
