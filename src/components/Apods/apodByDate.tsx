@@ -10,7 +10,7 @@ import getApodByDate from "@/app/actions/apodData";
 import { Apod } from "@/types/Apods/apods";
 import Favorites from "./Favorites";
 
-const today = moment().format();
+const today = moment().format("YYYY-MM-DD");
 
 export default function ApodSelection() {
   const [startDate, setStartDate] = useState(today);
