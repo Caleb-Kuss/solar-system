@@ -1,5 +1,5 @@
 
-import { totalFavoriteApods, totalFavoriteRoverImages, DailyApodLikes, WeeklyApodLikes, DailyRoverLikes, WeeklyRoverLikes } from "../actions/admin";
+import { totalFavoriteApods, totalFavoriteRoverImages, DailyApodLikes, WeeklyApodLikes, DailyRoverLikes, WeeklyRoverLikes, LastWeekRoverLikes, LastWeekApodLikes } from "../actions/admin";
 import { getServerSession } from "next-auth/next"
 import { options } from "../api/auth/[...nextauth]/options";
 import { Session } from "@/types/Users/users";
@@ -23,9 +23,11 @@ export default async function AdminPage() {
   const totalApods = await totalFavoriteApods()
   const totalRoverImages = await totalFavoriteRoverImages()
   const apodLikes = await DailyApodLikes()
-  const apodLikesLastWeek = await WeeklyApodLikes()
+  const apodLikesLastWeek = await LastWeekApodLikes()
+  const apodLikesThisWeek = await WeeklyApodLikes()
   const roverLikes = await DailyRoverLikes()
-  const roverLikesLastWeek = await WeeklyRoverLikes()
+  const roverLikesThisWeek = await WeeklyRoverLikes()
+  const lastWeekRoverLikes = await LastWeekRoverLikes()
   return (
     <>
       <Navbar />
@@ -44,6 +46,10 @@ export default async function AdminPage() {
             <p className="text-2xl">{apodLikes}</p>
           </div>
           <div className="flex flex-col items-center justify-center mb-4">
+            <h3 className="text-l font-bold mb-2">Total Favorite Apod Likes This Week</h3>
+            <p className="text-2xl">{apodLikesThisWeek}</p>
+          </div>
+          <div className="flex flex-col items-center justify-center mb-4">
             <h3 className="text-l font-bold mb-2">Total Favorite Apod Likes Last Week</h3>
             <p className="text-2xl">{apodLikesLastWeek}</p>
           </div>
@@ -57,9 +63,14 @@ export default async function AdminPage() {
             <p className="text-2xl">{roverLikes}</p>
           </div>
           <div className="flex flex-col items-center justify-center mb-4">
-            <h3 className="text-l font-bold mb-2">Total Favorite Rover Likes Last Week</h3>
-            <p className="text-2xl">{roverLikesLastWeek}</p>
+            <h3 className="text-l font-bold mb-2">Total Favorite Rover Likes This Week</h3>
+            <p className="text-2xl">{roverLikesThisWeek}</p>
           </div>
+          <div className="flex flex-col items-center justify-center mb-4">
+            <h3 className="text-l font-bold mb-2">Total Favorite Rover Likes Last Week</h3>
+            <p className="text-2xl">{lastWeekRoverLikes}</p>
+          </div>
+
         </div>
       </div>
     </>
