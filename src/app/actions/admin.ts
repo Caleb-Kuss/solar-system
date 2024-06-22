@@ -77,16 +77,14 @@ export async function WeeklyApodLikes() {
     );
   }
   const startOfThisWeek = moment().startOf("isoWeek");
-  const startOfLastWeek = startOfThisWeek.clone().subtract(1, "week");
-
-  const endOfLastWeek = startOfThisWeek.clone().subtract(1, "day").endOf("day");
+  const startOfNextWeek = startOfThisWeek.clone().add(1, "week");
 
   const favoriteApodsCount = await prisma.favoriteApod.count({
     where: {
       apod: {
         createdAt: {
-          gte: startOfLastWeek.toDate(),
-          lt: endOfLastWeek.toDate(),
+          gte: startOfThisWeek.toDate(),
+          lt: startOfNextWeek.toDate(),
         },
       },
     },
@@ -94,7 +92,30 @@ export async function WeeklyApodLikes() {
 
   return favoriteApodsCount;
 }
+export async function LastWeekApodLikes() {
+  const session: Session = await getServerSession(options);
 
+  if (!session || session?.user?.role !== "ADMIN") {
+    throw new Error(
+      "Unauthorized access: User does not have admin privileges.",
+    );
+  }
+  const startOfThisWeek = moment().startOf("isoWeek");
+  const startOfLastWeek = startOfThisWeek.clone().subtract(1, "week");
+
+  const favoriteApodsCount = await prisma.favoriteApod.count({
+    where: {
+      apod: {
+        createdAt: {
+          gte: startOfLastWeek.toDate(),
+          lt: startOfThisWeek.toDate(),
+        },
+      },
+    },
+  });
+
+  return favoriteApodsCount;
+}
 // This only counts new records
 export async function DailyRoverLikes() {
   const session: Session = await getServerSession(options);
@@ -106,7 +127,6 @@ export async function DailyRoverLikes() {
   }
   const today = moment().startOf("day").toDate();
   const tomorrow = moment(today).add(1, "day").toDate();
-
   const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.count({
     where: {
       marsRoverData: {
@@ -130,16 +150,38 @@ export async function WeeklyRoverLikes() {
     );
   }
   const startOfThisWeek = moment().startOf("isoWeek");
-  const startOfLastWeek = startOfThisWeek.clone().subtract(1, "week");
+  const startOfNextWeek = startOfThisWeek.clone().add(1, "week");
+  const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.count({
+    where: {
+      marsRoverData: {
+        createdAt: {
+          gte: startOfThisWeek.toDate(),
+          lt: startOfNextWeek.toDate(),
+        },
+      },
+    },
+  });
 
-  const endOfLastWeek = startOfThisWeek.clone().subtract(1, "day").endOf("day");
+  return favoriteRoverImagesCount;
+}
+
+export async function LastWeekRoverLikes() {
+  const session: Session = await getServerSession(options);
+
+  if (!session || session?.user?.role !== "ADMIN") {
+    throw new Error(
+      "Unauthorized access: User does not have admin privileges.",
+    );
+  }
+  const startOfThisWeek = moment().startOf("isoWeek");
+  const startOfLastWeek = startOfThisWeek.clone().subtract(1, "week");
 
   const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.count({
     where: {
       marsRoverData: {
         createdAt: {
           gte: startOfLastWeek.toDate(),
-          lt: endOfLastWeek.toDate(),
+          lt: startOfThisWeek.toDate(),
         },
       },
     },
