@@ -5,6 +5,7 @@ import { options } from "../api/auth/[...nextauth]/options";
 import { Session } from "@/types/Users/users";
 import Navbar from "@/components/NavBar/NavBar";
 import { Metadata } from "next";
+import StatCard from "@/components/statCard";
 
 export const metadata: Metadata = {
   title: "Solar System | Admin Dashboard",
@@ -29,13 +30,6 @@ export default async function AdminPage() {
   const roverLikesThisWeek = await WeeklyRoverLikes()
   const lastWeekRoverLikes = await LastWeekRoverLikes()
 
-
-  const StatCard = ({ title, value }: { title: string; value: number }) => (
-    <div className="flex flex-col items-center justify-center mb-4">
-      <h3 className="text-l font-bold mb-2">{title}</h3>
-      <p className="text-xl">{value}</p>
-    </div>
-  );
 
   return (
     <>

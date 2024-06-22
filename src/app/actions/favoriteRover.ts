@@ -35,6 +35,16 @@ export async function markImageAsFavorite(
       existingMarsData = await prisma.marsRoverData.create({
         data: {
           jsonData: marsPhoto,
+          likes: 1,
+        },
+      });
+    } else {
+      existingMarsData = await prisma.marsRoverData.update({
+        where: { id: existingMarsData.id },
+        data: {
+          likes: {
+            increment: 1,
+          },
         },
       });
     }
@@ -111,9 +121,19 @@ export async function unMarkImageAsFavorite(userData: User, marsPhoto: any) {
       return;
     }
 
-    return prisma.favoriteMarsRoverData.delete({
-      where: { id: favoriteMarsPhotoToDelete.id },
-    });
+    prisma.$transaction([
+      prisma.marsRoverData.update({
+        where: { id: id },
+        data: {
+          likes: {
+            decrement: 1,
+          },
+        },
+      }),
+      prisma.favoriteMarsRoverData.delete({
+        where: { id: favoriteMarsPhotoToDelete.id },
+      }),
+    ]);
   } catch (error) {
     console.error("Error unmarking image as favorite:", error);
     throw error;

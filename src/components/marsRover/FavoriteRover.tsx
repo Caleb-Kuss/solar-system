@@ -67,13 +67,7 @@ export default function RoverClient({ data }: any) {
         timeoutErrorMessage();
       }
     } else {
-      const data = await unMarkImageAsFavorite(session.user, marsPhoto);
-      if (!data) {
-        setErrormsg(
-          "There was an issue with removing this image as a favorite, please try again"
-        );
-        timeoutErrorMessage();
-      }
+      await unMarkImageAsFavorite(session.user, marsPhoto);
       setIsFavorite(false);
     }
     setIsLoading(false);

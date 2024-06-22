@@ -38,14 +38,22 @@ export async function markImageAsFavorite(userData: User, apod: Apod) {
           hdUrl: apod.hdurl,
           copyRight: apod.copyright,
           datePosted: apod.date,
+          likes: 1,
+        },
+      });
+    } else {
+      existingApod = await prisma.apod.update({
+        where: { id: existingApod.id },
+        data: {
+          likes: {
+            increment: 1,
+          },
         },
       });
     }
-
     let existingFavorite = await prisma.favoriteApod.findFirst({
       where: { userId: user.id, apodId: existingApod.id },
     });
-
     if (!existingFavorite) {
       existingFavorite = await prisma.favoriteApod.create({
         data: {
@@ -109,10 +117,19 @@ export async function unMarkImageAsFavorite(userData: User, apod: any) {
       console.error("FavoriteApod not found for deletion.");
       return;
     }
-
-    return prisma.favoriteApod.delete({
-      where: { id: favoriteApodToDelete.id },
-    });
+    prisma.$transaction([
+      prisma.apod.update({
+        where: { id: existingApod.id },
+        data: {
+          likes: {
+            decrement: 1,
+          },
+        },
+      }),
+      prisma.favoriteApod.delete({
+        where: { id: favoriteApodToDelete.id },
+      }),
+    ]);
   } catch (error) {
     console.error("Error unmarking image as favorite:", error);
     throw error;
