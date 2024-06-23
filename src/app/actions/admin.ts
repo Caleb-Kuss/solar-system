@@ -9,17 +9,35 @@ const prisma = new PrismaClient();
 
 const reducer = (data: any, isApod: boolean) => {
   if (isApod) {
-    const total = data.reduce((total: any, apod: any) => {
-      return total + apod?.apod?.likes || 0;
+    const uniqueApods = new Set();
+    const total = data.reduce((total: number, apod: any) => {
+      const id = apod?.apod?.id;
+      const likes = apod?.apod?.likes ?? 0;
+
+      if (id && !uniqueApods.has(id)) {
+        uniqueApods.add(id);
+        return total + likes;
+      } else {
+        return total;
+      }
     }, 0);
     return total;
+  } else {
+    const uniqueRoverImages = new Set();
+    const total = data.reduce((total: number, marsRoverData: any) => {
+      const id = marsRoverData?.marsRoverData?.id;
+      const likes = marsRoverData?.marsRoverData?.likes ?? 0;
+
+      if (id && !uniqueRoverImages.has(id)) {
+        uniqueRoverImages.add(id);
+        return total + likes;
+      } else {
+        return total;
+      }
+    }, 0);
+
+    return total;
   }
-
-  const total = data.reduce((total: any, marsRoverData: any) => {
-    return total + marsRoverData?.marsRoverData?.likes || 0;
-  }, 0);
-
-  return total;
 };
 
 export async function totalFavoriteApods() {
@@ -85,6 +103,7 @@ export async function DailyApodLikes() {
     select: {
       apod: {
         select: {
+          id: true,
           likes: true,
         },
       },
@@ -120,6 +139,7 @@ export async function WeeklyApodLikes() {
     select: {
       apod: {
         select: {
+          id: true,
           likes: true,
         },
       },
@@ -155,6 +175,7 @@ export async function LastWeekApodLikes() {
     select: {
       apod: {
         select: {
+          id: true,
           likes: true,
         },
       },
@@ -191,6 +212,7 @@ export async function DailyRoverLikes() {
     select: {
       marsRoverData: {
         select: {
+          id: true,
           likes: true,
         },
       },
@@ -222,7 +244,7 @@ export async function WeeklyRoverLikes() {
         },
       },
     },
-    select: { marsRoverData: { select: { likes: true } } },
+    select: { marsRoverData: { select: { likes: true, id: true } } },
   });
 
   return reducer(favoriteRoverImagesCount, false);
@@ -252,6 +274,7 @@ export async function LastWeekRoverLikes() {
     select: {
       marsRoverData: {
         select: {
+          id: true,
           likes: true,
         },
       },
