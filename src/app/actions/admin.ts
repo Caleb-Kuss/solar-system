@@ -86,14 +86,13 @@ export async function DailyApodLikes() {
   }
   const today = moment().startOf("day").toDate();
   const tomorrow = moment(today).add(1, "day").toDate();
-  const yesterday = moment(today).subtract(1, "day").toDate();
 
   const favoriteApods = await prisma.favoriteApod.findMany({
     where: {
       apod: {
         createdAt: {
-          gt: yesterday,
-          lte: tomorrow,
+          gte: today,
+          lt: tomorrow,
         },
         likes: {
           gt: 0,
@@ -195,13 +194,12 @@ export async function DailyRoverLikes() {
   }
   const today = moment().startOf("day").toDate();
   const tomorrow = moment(today).add(1, "day").toDate();
-  const yesterday = moment(today).subtract(1, "day").toDate();
 
   const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.findMany({
     where: {
       marsRoverData: {
         createdAt: {
-          gt: yesterday,
+          gte: today,
           lt: tomorrow,
         },
         likes: {
