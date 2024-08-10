@@ -1,0 +1,157 @@
+{
+  "planets": [
+    {
+      "name": "Mercury",
+      "diameterKm": 4879,
+      "distanceFromSunKm": 57700000,
+      "moons": 0,
+      "type": "Terrestrial",
+      "orbitPeriodDays": 88,
+      "image": "mercury.webp"
+    },
+    {
+      "name": "Venus",
+      "diameterKm": 12104,
+      "distanceFromSunKm": 108200000,
+      "moons": 0,
+      "type": "Terrestrial",
+      "orbitPeriodDays": 225,
+      "image": "venus.jpg"
+    },
+    {
+      "name": "Earth",
+      "diameterKm": 12742,
+      "distanceFromSunKm": 149600000,
+      "moons": 1,
+      "type": "Terrestrial",
+      "orbitPeriodDays": 365,
+      "image": "Earth.jpg"
+    },
+    {
+      "name": "Mars",
+      "diameterKm": 6779,
+      "distanceFromSunKm": 227900000,
+      "moons": 2,
+      "type": "Terrestrial",
+      "orbitPeriodDays": 687,
+      "image": "mars.jpg"
+    },
+    {
+      "name": "Jupiter",
+      "diameterKm": 139820,
+      "distanceFromSunKm": 778600000,
+      "moons": 95,
+      "type": "Gas Giant",
+      "orbitPeriodDays": 4333,
+      "image": "Jupiter.jpg"
+    },
+    {
+      "name": "Saturn",
+      "diameterKm": 116460,
+      "distanceFromSunKm": 1433500000,
+      "moons": 83,
+      "type": "Gas Giant",
+      "orbitPeriodDays": 10759,
+      "image": "saturn.jpg"
+    },
+    {
+      "name": "Uranus",
+      "diameterKm": 50724,
+      "distanceFromSunKm": 2872500000,
+      "moons": 27,
+      "type": "Ice Giant",
+      "orbitPeriodDays": 30687,
+      "image": "uranus.jpg"
+    },
+    {
+      "name": "Neptune",
+      "diameterKm": 49244,
+      "distanceFromSunKm": 4495100000,
+      "moons": 14,
+      "type": "Ice Giant",
+      "orbitPeriodDays": 60190,
+      "image": "neptune.jpg"
+    }
+  ],
+  "dwarfPlanets": [
+    {
+      "name": "Pluto",
+      "diameterKm": 2376,
+      "distanceFromSunKm": 4433000000,
+      "moons": 5,
+      "type": "Dwarf Planet",
+      "orbitPeriodDays": 90560,
+      "image": "pluto.webp"
+    },
+    {
+      "name": "Eris",
+      "diameterKm": 2326,
+      "distanceFromSunKm": 9600000000,
+      "moons": 1,
+      "type": "Dwarf Planet",
+      "orbitPeriodDays": 203780,
+      "image": "eris.jpg"
+    },
+    {
+      "name": "Haumea",
+      "diameterKm": 1632,
+      "distanceFromSunKm": 6350000000,
+      "moons": 2,
+      "type": "Dwarf Planet",
+      "orbitPeriodDays": 103500,
+      "image": "haumea.webp"
+    },
+    {
+      "name": "Makemake",
+      "diameterKm": 1430,
+      "distanceFromSunKm": 6170000000,
+      "moons": 1,
+      "type": "Dwarf Planet",
+      "orbitPeriodDays": 111700,
+      "image": "makemake.jpg"
+    }
+  ],
+  "comets": [
+    {
+      "name": "Halley's Comet",
+      "discoveryYear": 240,
+      "orbitPeriodYears": 76,
+      "LastSeen": 1986,
+      "nextAppearance": 2061,
+      "image":"halley-comet.jpg"
+    },
+    {
+      "name": "Hale-Bopp",
+      "discoveryYear": 1995,
+      "orbitPeriodYears": 2533,
+      "LastSeen": 1997,
+      "nextAppearance": 4390,
+      "image":"hale-bopp.jpg"
+    },
+    {
+      "name": "Encke's Comet",
+      "discoveryYear": 1786,
+      "orbitPeriodYears": 3.3,
+      "LastSeen": 2020,
+      "nextAppearance": 2024,
+      "image":"encke-comet.jpg"
+    },
+    {
+      "name": "Comet Hyakutake",
+      "discoveryYear": 1996,
+      "orbitPeriodYears": 12000,
+      "LastSeen": 1996,
+      "nextAppearance": 11816,
+      "image":"comet-hyakutake.gif"
+    },
+    {
+      "name": "Comet ISON",
+      "discoveryYear": 2012,
+      "orbitPeriodYears": 10500,
+      "LastSeen": 2013,
+      "nextAppearance": 15513,
+      "image": "comet-ison.jpg"
+    }
+  ]
+}
+

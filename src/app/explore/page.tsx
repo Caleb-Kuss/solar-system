@@ -68,6 +68,15 @@ export default async function Explore() {
               <span>Favorite Mars Photos</span>
             </button>
           </Link>
+
+          <Link href="/explore/favorites/solarSystemPlanets">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center space-x-2">
+              <div className="w-12 h-12 flex-shrink-0">
+                <Image src="/solarSystem.svg" alt="Solar System" width={48} height={48} className="object-contain" />
+              </div>
+              <span>Explore Our Solar System</span>
+            </button>
+          </Link>
         </div>
       </div>
     </>
