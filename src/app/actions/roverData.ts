@@ -15,6 +15,14 @@ export async function getManifest(rover: string) {
   const manifest = await fetch(
     `https://api.nasa.gov/mars-photos/api/v1/manifests/${rover}?api_key=${process.env.NASA_API_KEY}`,
   );
+
+  if (!manifest.ok) {
+    return {
+      statusCode: 404,
+      message: "Manifest not found for the specified rover"
+    };
+  }
+  
   return manifest.json();
 }
 

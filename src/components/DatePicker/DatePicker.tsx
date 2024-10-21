@@ -38,6 +38,12 @@ export default function MarsRoverParent() {
       setData([]);
       setLoading(true);
       const data = await getManifest(rover);
+      if (data.statusCode && data.statusCode !== 200) {
+        setError(data.message);
+        setLoading(false);
+        return;
+      }
+
       const lastRecievedPhoto = moment(data.photo_manifest.max_date).format();
 
       setStartDate(lastRecievedPhoto);
