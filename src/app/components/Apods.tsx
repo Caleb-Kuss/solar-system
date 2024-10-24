@@ -8,9 +8,19 @@ export default async function Apod() {
   const apod = await getApod.json();
 
   const video = apod.media_type === "video" ? true : false;
+  const other = apod.media_type === "other";
 
+  if (other) {
+    return (
+      <div className="bg-gray-800 text-white p-4 md:p-8 flex flex-col items-center ">
+        <h1 className="text-base md:text-3xl font-bold mb-4">
+          There was no image or video provided today. Please check back later.
+        </h1>
+      </div>
+    );
+  }
   return (
-    <div className="bg-gray-800 text-white p-4 md:p-8 flex flex-col items-center " >
+    <div className="bg-gray-800 text-white p-4 md:p-8 flex flex-col items-center ">
       {apod ? (
         <>
           <h1 className="text-base md:text-3xl font-bold mb-4">
@@ -38,7 +48,9 @@ export default async function Apod() {
               )}
             </div>
 
-            <h2 className="text-xl font-semibold text-center m-4">{apod.title}</h2>
+            <h2 className="text-xl font-semibold text-center m-4">
+              {apod.title}
+            </h2>
             <div className="flex justify-center">
               <Favorites data={apod} />
             </div>
@@ -47,14 +59,15 @@ export default async function Apod() {
           {apod.copyright && (
             <p className="text-xs md:text-sm">&copy; {apod.copyright}</p>
           )}
-        </>)
-        :
-        (
-          <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4">We are having trouble getting the APOD of the day, Please check back later.</h1>
-          </div>
-        )
-      }
+        </>
+      ) : (
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">
+            We are having trouble getting the APOD of the day, Please check back
+            later.
+          </h1>
+        </div>
+      )}
     </div>
   );
 }
