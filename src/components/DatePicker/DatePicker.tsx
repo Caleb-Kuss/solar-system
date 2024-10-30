@@ -30,7 +30,7 @@ export default function MarsRoverParent() {
     pageData,
     nextPage,
     previousPage,
-    resetPageNumber
+    resetPageNumber,
   } = usePagination(data);
   const handleRoverChange = async (rover: string) => {
     try {
@@ -38,13 +38,14 @@ export default function MarsRoverParent() {
       setData([]);
       setLoading(true);
       const data = await getManifest(rover);
+
       if (data.statusCode && data.statusCode !== 200) {
         setError(data.message);
         setLoading(false);
         return;
       }
 
-      const lastRecievedPhoto = moment(data.photo_manifest.max_date).format();
+      const lastRecievedPhoto = moment(data.rover.max_date).format();
 
       setStartDate(lastRecievedPhoto);
       setSelectedRover(rover);
