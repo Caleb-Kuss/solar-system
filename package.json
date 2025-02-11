@@ -16,7 +16,7 @@
     "next-auth": "^4.24.11",
     "react": "^19",
     "react-dom": "^19",
-    "react-datepicker": "^7.6.0",
+    "react-datepicker": "^8.0.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
