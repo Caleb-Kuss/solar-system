@@ -92,19 +92,15 @@ export default function MarsRoverParent() {
             setStartDate(date);
             setData([]);
           }}
-          className="datepicker border rounded-md shadow-sm w-full md:w-auto mb-2 md:mb-0"
-          wrapperClassName="flex justify-center"
-          customInput={
-            <input style={{ color: "black", textAlign: "center" }} />
-          }
+          className="datepicker border rounded-md shadow-sm w-full md:w-auto mb-2 md:mb-0 bg-gray-300 text-black text-center"
         />
         <div className="flex flex-wrap justify-center  mt-8 md:mt-0 md:ml-2">
           <select
             value={selectedRover}
             onChange={(e) => handleRoverChange(e.target.value)}
-            className="border rounded-md shadow-sm w-full md:w-auto ml-0 md:ml-2 text-black text-center"
+            className="border rounded-md shadow-sm w-full md:w-auto ml-0 md:ml-2 text-black text-center bg-gray-300"
           >
-            <option value="">Select a Rover</option>
+            <option>Select a Rover</option>
             {rovers.map((rover) => (
               <option key={rover} value={rover}>
                 {rover}

@@ -18,8 +18,6 @@ export default function ApodSelection() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-
-
   useEffect(() => {
     const fetchApodData = async () => {
       try {
@@ -33,7 +31,9 @@ export default function ApodSelection() {
 
         setData(data);
       } catch (error) {
-        setError("We are having trouble getting the APOD, Please check back later");
+        setError(
+          "We are having trouble getting the APOD, Please check back later",
+        );
       } finally {
         setLoading(false);
       }
@@ -53,11 +53,7 @@ export default function ApodSelection() {
               setStartDate(date);
               setData(undefined);
             }}
-            className="datepicker border rounded-md shadow-sm w-full md:w-auto mb-2 md:mb-0"
-            wrapperClassName="flex justify-center"
-            customInput={
-              <input style={{ color: "black", textAlign: "center" }} />
-            }
+            className="datepicker border rounded-md shadow-sm w-full md:w-auto mb-2 md:mb-0 text-black text-center bg-gray-300"
           />
         </div>
         {loading && <SpaceSpinner classSize={"large"} />}
@@ -97,7 +93,6 @@ export default function ApodSelection() {
                     alt={data.title}
                   />
                 )}
-
               </div>
 
               <h1 className="text-xl md:text-3xl font-bold text-center  mb-4 mt-4">
@@ -106,24 +101,16 @@ export default function ApodSelection() {
               <div className="flex justify-center mt-2 items-center space-x-10 mb-4">
                 <Favorites data={data} />
               </div>
-              <p className="text-lg md:text-xl  mb-4">
-                {data.explanation}
-              </p>
-              <p className="text-lg md:text-xl  mb-4">
-                Date: {data.date}
-              </p>
+              <p className="text-lg md:text-xl  mb-4">{data.explanation}</p>
+              <p className="text-lg md:text-xl  mb-4">Date: {data.date}</p>
               {data.copyright && (
-                <p className="text-lg md:text-xl ">
-                  &copy; {data.copyright}
-                </p>
+                <p className="text-lg md:text-xl ">&copy; {data.copyright}</p>
               )}
             </div>
           </div>
-        )
-        }
+        )}
         <ScrollToTopButton />
-      </div >
+      </div>
     </>
   );
 }
-
