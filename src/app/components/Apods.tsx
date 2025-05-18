@@ -34,9 +34,6 @@ export default async function Apod() {
           height={500}
         />
         <h1 className="text-base md:text-3xl font-bold mb-4">{apod.title}</h1>
-        <div className="flex justify-center">
-          <Favorites data={apod} />
-        </div>
         <p className="mt-2 text-sm">{apod.explanation}</p>
       </div>
     );
