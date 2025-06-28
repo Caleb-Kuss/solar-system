@@ -22,7 +22,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.11",
     "@types/bcrypt": "^5.0.2",
-    "@types/node": "^22",
+    "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-datepicker": "^7.0.0",
     "@types/react-dom": "^19",
