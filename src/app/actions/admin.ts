@@ -5,7 +5,59 @@ import { getServerSession } from "next-auth/next";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Session } from "@/types/Users/users";
 import moment from "moment";
+
 const prisma = new PrismaClient();
+
+const startOfThisWeek = moment().startOf("isoWeek").toDate();
+const startOfNextWeek = startOfThisWeek.clone().add(1, "week").toDate();
+const today = moment().startOf("day").toDate();
+const tomorrow = moment(today).add(1, "day").toDate();
+
+const getFavoriteApods = async (greaterDate: Date, lessDate: Date) => {
+  return prisma.favoriteApod.findMany({
+    where: {
+      apod: {
+        createdAt: {
+          gte: greaterDate,
+          lt: lessDate,
+        },
+        likes: {
+          gt: 0,
+        },
+      },
+    },
+    select: {
+      apod: {
+        select: {
+          id: true,
+          likes: true,
+        },
+      },
+    },
+  });
+};
+
+const getFavoriteRoverImages = async (greaterDate: Date, lessDate: Date) => {
+  return prisma.favoriteMarsRoverData.findMany({
+    where: {
+      marsRoverData: {
+        createdAt: {
+          gte: startOfLastWeek.toDate(),
+          lt: startOfThisWeek.toDate(),
+        },
+        likes: { gt: 0 },
+      },
+    },
+    select: {
+      marsRoverData: {
+        select: {
+          id: true,
+          likes: true,
+        },
+      },
+    },
+  });
+};
 
 const reducer = (data: any, isApod: boolean) => {
   if (isApod) {
@@ -50,8 +102,7 @@ export async function totalFavoriteApods() {
   }
 
   try {
-    const total = await prisma.favoriteApod.count();
-    return total;
+    return prisma.favoriteApod.count();
   } catch (error) {
     console.error("Error getting total favorite Apods:", error);
     throw error;
@@ -67,8 +118,7 @@ export async function totalFavoriteRoverImages() {
     );
   }
   try {
-    const total = await prisma.favoriteMarsRoverData.count();
-    return total;
+    return prisma.favoriteMarsRoverData.count();
   } catch (error) {
     console.error("Error getting total favorite rover images:", error);
     throw error;
@@ -84,30 +134,8 @@ export async function DailyApodLikes() {
       "Unauthorized access: User does not have admin privileges.",
     );
   }
-  const today = moment().startOf("day").toDate();
-  const tomorrow = moment(today).add(1, "day").toDate();
 
-  const favoriteApods = await prisma.favoriteApod.findMany({
-    where: {
-      apod: {
-        createdAt: {
-          gte: today,
-          lt: tomorrow,
-        },
-        likes: {
-          gt: 0,
-        },
-      },
-    },
-    select: {
-      apod: {
-        select: {
-          id: true,
-          likes: true,
-        },
-      },
-    },
-  });
+  const favoriteApods = await getFavoriteApods(today, tomorrow);
 
   return reducer(favoriteApods, true);
 }
@@ -120,30 +148,11 @@ export async function WeeklyApodLikes() {
       "Unauthorized access: User does not have admin privileges.",
     );
   }
-  const startOfThisWeek = moment().startOf("isoWeek");
-  const startOfNextWeek = startOfThisWeek.clone().add(1, "week");
 
-  const favoriteApodsCount = await prisma.favoriteApod.findMany({
-    where: {
-      apod: {
-        createdAt: {
-          gte: startOfThisWeek.toDate(),
-          lt: startOfNextWeek.toDate(),
-        },
-        likes: {
-          gt: 0,
-        },
-      },
-    },
-    select: {
-      apod: {
-        select: {
-          id: true,
-          likes: true,
-        },
-      },
-    },
-  });
+  const favoriteApodsCount = await getFavoriteApods(
+    startOfThisWeek,
+    startOfNextWeek,
+  );
 
   return reducer(favoriteApodsCount, true);
 }
@@ -156,30 +165,11 @@ export async function LastWeekApodLikes() {
       "Unauthorized access: User does not have admin privileges.",
     );
   }
-  const startOfThisWeek = moment().startOf("isoWeek");
-  const startOfLastWeek = startOfThisWeek.clone().subtract(1, "week");
 
-  const favoriteApodsCount = await prisma.favoriteApod.findMany({
-    where: {
-      apod: {
-        createdAt: {
-          gte: startOfLastWeek.toDate(),
-          lt: startOfThisWeek.toDate(),
-        },
-        likes: {
-          gt: 0,
-        },
-      },
-    },
-    select: {
-      apod: {
-        select: {
-          id: true,
-          likes: true,
-        },
-      },
-    },
-  });
+  const favoriteApodsCount = await getFavoriteApods(
+    startOfLastWeek,
+    startOfThisWeek,
+  );
 
   return reducer(favoriteApodsCount, true);
 }
@@ -192,30 +182,11 @@ export async function DailyRoverLikes() {
       "Unauthorized access: User does not have admin privileges.",
     );
   }
-  const today = moment().startOf("day").toDate();
-  const tomorrow = moment(today).add(1, "day").toDate();
 
-  const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.findMany({
-    where: {
-      marsRoverData: {
-        createdAt: {
-          gte: today,
-          lt: tomorrow,
-        },
-        likes: {
-          gt: 0,
-        },
-      },
-    },
-    select: {
-      marsRoverData: {
-        select: {
-          id: true,
-          likes: true,
-        },
-      },
-    },
-  });
+  const favoriteRoverImagesCount = await getFavoriteRoverImages(
+    today,
+    tomorrow,
+  );
 
   return reducer(favoriteRoverImagesCount, false);
 }
@@ -228,22 +199,11 @@ export async function WeeklyRoverLikes() {
       "Unauthorized access: User does not have admin privileges.",
     );
   }
-  const startOfThisWeek = moment().startOf("isoWeek");
-  const startOfNextWeek = startOfThisWeek.clone().add(1, "week");
-  const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.findMany({
-    where: {
-      marsRoverData: {
-        createdAt: {
-          gte: startOfThisWeek.toDate(),
-          lt: startOfNextWeek.toDate(),
-        },
-        likes: {
-          gt: 0,
-        },
-      },
-    },
-    select: { marsRoverData: { select: { likes: true, id: true } } },
-  });
+
+  const favoriteRoverImagesCount = await getFavoriteRoverImages(
+    startOfThisWeek,
+    startOfNextWeek,
+  );
 
   return reducer(favoriteRoverImagesCount, false);
 }
@@ -256,28 +216,11 @@ export async function LastWeekRoverLikes() {
       "Unauthorized access: User does not have admin privileges.",
     );
   }
-  const startOfThisWeek = moment().startOf("isoWeek");
-  const startOfLastWeek = startOfThisWeek.clone().subtract(1, "week");
 
-  const favoriteRoverImagesCount = await prisma.favoriteMarsRoverData.findMany({
-    where: {
-      marsRoverData: {
-        createdAt: {
-          gte: startOfLastWeek.toDate(),
-          lt: startOfThisWeek.toDate(),
-        },
-        likes: { gt: 0 },
-      },
-    },
-    select: {
-      marsRoverData: {
-        select: {
-          id: true,
-          likes: true,
-        },
-      },
-    },
-  });
+  const favoriteRoverImagesCount = await getFavoriteRoverImages(
+    startOfLastWeek,
+    startOfThisWeek,
+  );
 
   return reducer(favoriteRoverImagesCount, false);
 }
