@@ -9,6 +9,37 @@ import { Session } from "@/types/Users/users";
 
 const prisma = new PrismaClient();
 
+async function upsertApod(apod: Apod) {
+  let existingApod = await prisma.apod.findFirst({
+    where: { url: apod.url },
+  });
+
+  if (!existingApod) {
+    existingApod = await prisma.apod.create({
+      data: {
+        title: apod.title,
+        explanation: apod.explanation,
+        url: apod.url,
+        hdUrl: apod.hdurl,
+        copyRight: apod.copyright,
+        datePosted: apod.date,
+        likes: 1,
+      },
+    });
+  } else {
+    existingApod = await prisma.apod.update({
+      where: { id: existingApod.id },
+      data: {
+        likes: {
+          increment: 1,
+        },
+      },
+    });
+  }
+
+  return existingApod;
+}
+
 export async function markImageAsFavorite(userData: User, apod: Apod) {
   const session: Session = await getServerSession(options);
 
@@ -25,35 +56,12 @@ export async function markImageAsFavorite(userData: User, apod: Apod) {
       throw new Error("User not found");
     }
 
-    let existingApod = await prisma.apod.findFirst({
-      where: { url: apod.url },
-    });
+    const existingApod = await upsertApod(apod);
 
-    if (!existingApod) {
-      existingApod = await prisma.apod.create({
-        data: {
-          title: apod.title,
-          explanation: apod.explanation,
-          url: apod.url,
-          hdUrl: apod.hdurl,
-          copyRight: apod.copyright,
-          datePosted: apod.date,
-          likes: 1,
-        },
-      });
-    } else {
-      existingApod = await prisma.apod.update({
-        where: { id: existingApod.id },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    }
     let existingFavorite = await prisma.favoriteApod.findFirst({
       where: { userId: user.id, apodId: existingApod.id },
     });
+
     if (!existingFavorite) {
       existingFavorite = await prisma.favoriteApod.create({
         data: {
@@ -94,11 +102,11 @@ export async function unMarkImageAsFavorite(userData: User, apod: any) {
 
     if (apod.apodId) {
       existingApod = await prisma.apod.findFirst({
-        where: { id: apod.apodId as string },
+        where: { id: apod.apodId },
       });
     } else {
       existingApod = await prisma.apod.findFirst({
-        where: { url: apod.url as string },
+        where: { url: apod.url },
       });
     }
 
@@ -117,6 +125,7 @@ export async function unMarkImageAsFavorite(userData: User, apod: any) {
       console.error("FavoriteApod not found for deletion.");
       return;
     }
+
     prisma.$transaction([
       prisma.apod.update({
         where: { id: existingApod.id },
@@ -150,33 +159,28 @@ export async function getExistingApod({ email }: User, data: any) {
 
     if (data.apodId) {
       existingApod = await prisma.apod.findFirst({
-        where: { id: data.apodId as string },
+        where: { id: data.apodId },
       });
       id = data.apodId;
     } else {
       existingApod = await prisma.apod.findFirst({
-        where: { url: data.url as string },
+        where: { url: data.url },
       });
 
       id = existingApod?.id;
     }
 
     const user = await prisma.user.findUnique({
-      where: { email: email },
+      where: { email },
     });
 
-    if (!user) {
+    if (!existingApod || !user) {
       return null;
     }
 
-    if (!existingApod) {
-      return null;
-    }
-    const existingFavorite = await prisma.favoriteApod.findFirst({
+    return prisma.favoriteApod.findFirst({
       where: { userId: user.id, apodId: id as string },
     });
-
-    return existingFavorite;
   } catch (error) {
     console.error("Error getting existing Apod:", error);
     throw error;
@@ -199,13 +203,11 @@ export async function getFavoriteApods(userData: User) {
       throw new Error("User not found");
     }
 
-    const favoriteApods = await prisma.favoriteApod.findMany({
+    return prisma.favoriteApod.findMany({
       where: { userId: user.id },
       include: { apod: true },
       orderBy: { apod: { createdAt: "desc" } },
     });
-
-    return favoriteApods;
   } catch (error) {
     console.error("Error getting favorite Apods:", error);
     throw error;
