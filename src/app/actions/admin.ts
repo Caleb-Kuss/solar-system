@@ -7,9 +7,10 @@ import { Session } from "@/types/Users/users";
 import moment from "moment";
 
 const prisma = new PrismaClient();
+const startOfThisWeek = moment().startOf("isoWeek");
+const startOfLastWeek = startOfThisWeek.clone().subtract(1, "week");
 
-const startOfThisWeek = moment().startOf("isoWeek").toDate();
-const startOfNextWeek = startOfThisWeek.clone().add(1, "week").toDate();
+const startOfNextWeek = startOfThisWeek.clone().add(1, "week");
 const today = moment().startOf("day").toDate();
 const tomorrow = moment(today).add(1, "day").toDate();
 
@@ -150,8 +151,8 @@ export async function WeeklyApodLikes() {
   }
 
   const favoriteApodsCount = await getFavoriteApods(
-    startOfThisWeek,
-    startOfNextWeek,
+    startOfThisWeek.toDate(),
+    startOfNextWeek.toDate(),
   );
 
   return reducer(favoriteApodsCount, true);
@@ -167,8 +168,8 @@ export async function LastWeekApodLikes() {
   }
 
   const favoriteApodsCount = await getFavoriteApods(
-    startOfLastWeek,
-    startOfThisWeek,
+    startOfLastWeek.toDate(),
+    startOfThisWeek.toDate(),
   );
 
   return reducer(favoriteApodsCount, true);
@@ -201,8 +202,8 @@ export async function WeeklyRoverLikes() {
   }
 
   const favoriteRoverImagesCount = await getFavoriteRoverImages(
-    startOfThisWeek,
-    startOfNextWeek,
+    startOfThisWeek.toDate(),
+    startOfNextWeek.toDate(),
   );
 
   return reducer(favoriteRoverImagesCount, false);
@@ -218,8 +219,8 @@ export async function LastWeekRoverLikes() {
   }
 
   const favoriteRoverImagesCount = await getFavoriteRoverImages(
-    startOfLastWeek,
-    startOfThisWeek,
+    startOfLastWeek.toDate(),
+    startOfThisWeek.toDate(),
   );
 
   return reducer(favoriteRoverImagesCount, false);
